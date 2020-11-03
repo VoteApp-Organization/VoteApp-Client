@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextView notRegistered;
+    private TextView notRegisteredButton;
     private FirebaseAuth mAuth;
     private EditText email;
     private EditText password;
@@ -32,8 +32,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        notRegistered = findViewById(R.id.notRegistered);
-        notRegistered.setOnClickListener(new View.OnClickListener() {
+        notRegisteredButton = findViewById(R.id.notRegisteredButton);
+        notRegisteredButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), RegisterActivity.class);
