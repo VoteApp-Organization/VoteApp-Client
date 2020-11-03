@@ -6,66 +6,177 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+
     <TextView
         android:id="@+id/loginTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logowanie"
-        android:textSize="35dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Welcome to"
+        android:textColor="@color/colorGrey"
+        android:textSize="50dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.227" />
+        app:layout_constraintVertical_bias="0.037" />
+
+    <TextView
+        android:id="@+id/loginTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="VoteApp"
+        android:textColor="@color/colorBlue"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editTextEmailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_input"
         android:ems="10"
-        android:hint="example@email.com"
+        android:hint="piotr.nowak@wp.pl"
         android:inputType="textEmailAddress"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginTitle"
-        app:layout_constraintVertical_bias="0.090" />
+        app:layout_constraintTop_toBottomOf="@+id/loginTitle2"
+        app:layout_constraintVertical_bias="0.082" />
 
     <EditText
         android:id="@+id/editTextPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:ems="10"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:background="@drawable/custom_input"
         android:inputType="textPassword"
-        android:hint="***********"
+        android:hint="******************"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress"
-        app:layout_constraintVertical_bias="0.065" />
+        app:layout_constraintVertical_bias="0.040" />
+
 
     <Button
         android:id="@+id/loginBtn"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_button"
+        android:fontFamily="sans-serif-medium"
+        android:text="Zaloguj się"
+        android:textAllCaps="false"
+        android:textSize="16dp"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintVertical_bias="0.06" />
+
+    <TextView
+        android:id="@+id/or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zaloguj się"
+        android:text="Lub"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <Button
+        android:id="@+id/loginFacebookBtn"
+        android:layout_width="250dp"
+        android:textColor="@color/colorGrey"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_button_social"
+        android:fontFamily="sans-serif-medium"
+        android:text="Zaloguj się przez Facebook"
+        android:textAllCaps="false"
+        android:paddingStart="12dp"
+        android:drawableStart="@drawable/facebook"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/or"
+        app:layout_constraintVertical_bias="0.065" />
+
+    <Button
+        android:id="@+id/loginGoogleBtn"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:text="Zaloguj się przez Google"
+        android:textColor="@color/colorGrey"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/google"
+        android:paddingStart="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+        android:textAllCaps="false"
+        android:background="@drawable/custom_button_social"
+        app:layout_constraintTop_toBottomOf="@+id/loginFacebookBtn"
         app:layout_constraintVertical_bias="0.113" />
+
+    <TextView
+        android:id="@+id/forgottenPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zapomniałeś hasła?"
+        android:textColor="@color/colorBlue"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginGoogleBtn"
+        app:layout_constraintVertical_bias="0.201" />
 
     <TextView
         android:id="@+id/notRegistered"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nie posiadasz konta? Zarejestruj się"
+        android:text="Nie posiadasz konta?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintHorizontal_bias="0.30"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginBtn"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintTop_toBottomOf="@+id/forgottenPassword"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <TextView
+        android:id="@+id/notRegisteredButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zarejestruj się"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/colorBlue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintStart_toEndOf="@+id/notRegistered"
+        app:layout_constraintTop_toBottomOf="@+id/forgottenPassword"
+        app:layout_constraintVertical_bias="0.1" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
