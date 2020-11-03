@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextView alreadyRegisterd;
+    private TextView alreadyRegisteredButton;
     private FirebaseAuth mAuth;
     private EditText email;
     private EditText password;
@@ -32,8 +32,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
-        alreadyRegisterd = findViewById(R.id.alreadyRegistered);
-        alreadyRegisterd.setOnClickListener(new View.OnClickListener() {
+        alreadyRegisteredButton = findViewById(R.id.alreadyRegisteredButton);
+        alreadyRegisteredButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), LoginActivity.class);
