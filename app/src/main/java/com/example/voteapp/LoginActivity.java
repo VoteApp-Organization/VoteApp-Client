@@ -12,16 +12,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
     private TextView notRegisteredButton;
-    private FirebaseAuth mAuth;
     private EditText email;
     private EditText password;
     private Button loginBtn;
@@ -31,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mAuth = FirebaseAuth.getInstance();
         notRegisteredButton = findViewById(R.id.notRegisteredButton);
         notRegisteredButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,27 +47,44 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                try {
+                    sendPostRequestToCheckUserExist();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    public void login() {
-        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+    private void sendPostRequestToCheckUserExist() throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("email", email.getText().toString());
+        obj.put("password", password.getText().toString());
+
+        String URL = "https://voteaplication.herokuapp.com/loginUser";
+
+        RequestManager requestManager = RequestManager.getInstance(this);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, obj,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("LoginActivity", "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(LoginActivity.this, Dashboard.class);
-                            startActivity(intent);
-                        } else {
-                            Log.w("LoginActivity", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                    public void onResponse(JSONObject response) {
+                        Intent intent = new Intent(LoginActivity.this, Dashboard.class);
+                        try {
+                            intent.putExtra("userId", response.getString("id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                        startActivity(intent);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.w("LoginActivity", "signInWithEmail:failure", error.getCause());
+                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
+        requestManager.addToRequestQueue(jsObjRequest);
     }
 }

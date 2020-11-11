@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/activityTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dashboard"
@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/activityTitleTextView"
         app:layout_constraintVertical_bias="0.03" />
 
 
@@ -47,7 +47,7 @@
         app:layout_constraintVertical_bias="0.05" >
 
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/yourGroupsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
@@ -65,14 +65,15 @@
             android:layout_width="140dp"
             android:layout_height="60dp"
             android:ems="10"
-            android:text="Dormitory"
+            android:text=""
             android:gravity="center"
+            android:textSize="16dp"
             android:background="@drawable/custom_small_container"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.072"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username"
+            app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
             app:layout_constraintVertical_bias="0.1" />
 
         <TextView
@@ -80,13 +81,14 @@
             android:layout_width="140dp"
             android:layout_height="60dp"
             android:background="@drawable/custom_small_container"
+            android:textSize="16dp"
             android:ems="10"
             android:gravity="center"
-            android:text="College"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/group1"
-            app:layout_constraintTop_toBottomOf="@+id/username"
+            app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
             app:layout_constraintVertical_bias="0.095" />
 
         <TextView
@@ -95,14 +97,18 @@
             android:layout_height="60dp"
             android:background="@drawable/custom_small_container"
             android:ems="10"
+            android:textSize="16dp"
             android:gravity="center"
-            android:text="Dormitory"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.068"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group1"
-            app:layout_constraintVertical_bias="0.15" />
+            app:layout_constraintVertical_bias="0.15"
+            android:singleLine="true" />
 
         <TextView
             android:id="@+id/group4"
@@ -110,8 +116,9 @@
             android:layout_height="60dp"
             android:background="@drawable/custom_small_container"
             android:ems="10"
+            android:textSize="16dp"
             android:gravity="center"
-            android:text="College"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.593"
@@ -136,42 +143,4 @@
             app:layout_constraintVertical_bias="0.456" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <TextView
-        android:id="@+id/infoFromDatabase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="info"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.097" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoFromDatabase"
-        app:layout_constraintVertical_bias="0.179" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Zapisz"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="0.035" />
 </androidx.constraintlayout.widget.ConstraintLayout>
