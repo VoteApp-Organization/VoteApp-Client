@@ -33,6 +33,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
     private String groupTitle;
     private String title;
     final List<SingleQuestion> allQuestions = new ArrayList<>();
+    final List<VoteAnswer> voteAnswers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
                 Intent intent = new Intent(SurveyContainerActivity.this, SingleQuestionActivity.class);
                 Bundle args = new Bundle();
                 args.putSerializable("questionsList",(Serializable)allQuestions);
+                args.putSerializable("voteAnswers",(Serializable)voteAnswers);
                 intent.putExtra("BUNDLE", args);
                 intent.putExtra("userId", userId);
                 intent.putExtra("groupId", groupId);
@@ -76,8 +78,6 @@ public class SurveyContainerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(SurveyContainerActivity.this, GroupView.class);
-        //  setIntent.addCategory(Intent.CATEGORY_HOME);
-        //   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("userId", userId);
         intent.putExtra("groupId", groupId);
         intent.putExtra("groupTitle", groupTitle);
