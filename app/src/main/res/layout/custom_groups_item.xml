@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="20dp"
+    android:id="@+id/groupItemLayout"
     android:background="@drawable/custom_small_container"
     android:orientation="vertical">
 
@@ -58,7 +59,6 @@
         android:id="@+id/buttonOpenSurvey"
         android:layout_width="100dp"
         android:layout_height="20dp"
-
         android:layout_alignBottom="@id/surveyIcon"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"

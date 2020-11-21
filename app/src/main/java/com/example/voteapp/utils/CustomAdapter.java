@@ -3,11 +3,16 @@ package com.example.voteapp.utils;
 import android.annotation.SuppressLint;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.voteapp.R;
@@ -57,9 +62,14 @@ public class CustomAdapter extends BaseAdapter {
         TextView titleTextView = (TextView) convertView.findViewById(R.id.surveyTitle);
         TextView numberOfQuestions = (TextView) convertView.findViewById(R.id.surveyNumberOfQuestions);
         ImageView surveyIcon = (ImageView) convertView.findViewById(R.id.surveyIcon);
+        Button buttonOpenSurvey = (Button) convertView.findViewById(R.id.buttonOpenSurvey);
+        RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.groupItemLayout);
 
         System.out.println(position);
         System.out.println("TU " + surveyList.get(position));
+
+        PorterDuffColorFilter greyFilter = new PorterDuffColorFilter(Color.rgb(230, 230, 230), PorterDuff.Mode.MULTIPLY);
+
 
         for (int i = 0; i < surveyList.size(); i++) {
             Survey str = surveyList.get(position);
@@ -67,28 +77,13 @@ public class CustomAdapter extends BaseAdapter {
             String number = "10";
             numberOfQuestions.setText('(' + number + " questions)");
             surveyIcon.setImageResource(imageList.get(position));
+            if(position != 0){
+                layout.getBackground().setColorFilter(greyFilter);
+                buttonOpenSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
+                buttonOpenSurvey.setText("Already voted");
+            }
         }
 
         return convertView;
     }
-
-
-/*    public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
-     //   View rowView = inflater.inflate(R.layout.custom_groups_item, null, true);
-        View rowView = LayoutInflater.from(getContext()).inflate(R.layout.custom_groups_item, parent, false);
-        TextView titleText = (TextView) rowView.findViewById(R.id.textView1);
-        ImageView imageView1 = (ImageView) rowView.findViewById(R.id.imageView1);
-        TextView questions = (TextView) rowView.findViewById(R.id.textView2);
-
-
-        titleText.setText(surveyList.get(position).getVoteTitle());
-       // imageView1.setImageResource(imgid[position]);
-  //      questions.setText(surveyList.get(position).getAuthor_id().toString());
-
-        return rowView;
-
-    }*/
-
-    ;
 }
