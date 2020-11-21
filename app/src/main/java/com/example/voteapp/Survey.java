@@ -1,22 +1,22 @@
 package com.example.voteapp;
 
-import java.sql.Date;
-
 public class Survey {
-    private Long id;
 
+    private Long vote_Id;
     private String voteTitle;
-    private Date createdDate;
+    private String createdDate;
     private Long author_id;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private Boolean isPublicVote;
     private Boolean isAnonymousVote;
     private Boolean isMandatory;
-    private String votePassword;
+    public Boolean answerHasBeenGiven;
+    public String voteDate;
+    public Integer numberOfQuestions;
 
-    public Survey(Long id, String voteTitle, Date createdDate, Long author_id, Date startDate, Date endDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, String votePassword) {
-        this.id = id;
+    public Survey(Long vote_Id, String voteTitle, String createdDate, Long author_id, String startDate, String endDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Boolean answerHasBeenGiven, String voteDate, Integer numberOfQuestions) {
+        this.vote_Id = vote_Id;
         this.voteTitle = voteTitle;
         this.createdDate = createdDate;
         this.author_id = author_id;
@@ -25,15 +25,17 @@ public class Survey {
         this.isPublicVote = isPublicVote;
         this.isAnonymousVote = isAnonymousVote;
         this.isMandatory = isMandatory;
-        this.votePassword = votePassword;
+        this.answerHasBeenGiven = answerHasBeenGiven;
+        this.voteDate = voteDate;
+        this.numberOfQuestions = numberOfQuestions;
     }
 
-    public Long getId() {
-        return id;
+    public Long getVote_Id() {
+        return vote_Id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setVote_Id(Long vote_Id) {
+        this.vote_Id = vote_Id;
     }
 
     public String getVoteTitle() {
@@ -44,11 +46,11 @@ public class Survey {
         this.voteTitle = voteTitle;
     }
 
-    public Date getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -60,19 +62,19 @@ public class Survey {
         this.author_id = author_id;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -100,11 +102,27 @@ public class Survey {
         isMandatory = mandatory;
     }
 
-    public String getVotePassword() {
-        return votePassword;
+    public Boolean getAnswerHasBeenGiven() {
+        return answerHasBeenGiven;
     }
 
-    public void setVotePassword(String votePassword) {
-        this.votePassword = votePassword;
+    public void setAnswerHasBeenGiven(Boolean answerHasBeenGiven) {
+        this.answerHasBeenGiven = answerHasBeenGiven;
+    }
+
+    public String getVoteDate() {
+        return voteDate;
+    }
+
+    public void setVoteDate(String voteDate) {
+        this.voteDate = voteDate;
+    }
+
+    public Integer getNumberOfQuestions() {
+        return numberOfQuestions;
+    }
+
+    public void setNumberOfQuestions(Integer numberOfQuestions) {
+        this.numberOfQuestions = numberOfQuestions;
     }
 }
