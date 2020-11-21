@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:background="@drawable/custom_small_container"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/surveyIcon"
+        android:layout_width="40dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/budget" />
+
+    <TextView
+        android:id="@+id/surveyTitle"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/surveyIcon"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="130dp"
+        android:layout_toEndOf="@id/surveyIcon"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/surveyNumberOfQuestions"
+        android:layout_width="250dp"
+        android:layout_height="10dp"
+        android:layout_below="@+id/surveyTitle"
+        android:layout_alignLeft="@id/surveyTitle"
+        android:layout_alignBottom="@id/surveyIcon"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="130dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@+id/surveyIcon"
+        android:gravity="center_vertical"
+        android:text="(questions)"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/buttonOpenSurvey"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+
+        android:layout_alignBottom="@id/surveyIcon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_button"
+        android:text="Open survey"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="14dp"
+        app:layout_constraintVertical_bias="0.456" />
+
+</RelativeLayout>

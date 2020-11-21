@@ -6,42 +6,81 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Dashboard extends AppCompatActivity {
 
     private List<TextView> textViewList = new ArrayList<>();
+    private Map<Integer, String> groupMap = new HashMap<Integer, String>();
     private List<String> groupNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        TextView group1 = findViewById(R.id.group1);
-        TextView group2 = findViewById(R.id.group2);
-        TextView group3 = findViewById(R.id.group3);
-        TextView group4 = findViewById(R.id.group4);
+        final TextView group1 = findViewById(R.id.group1);
+        final TextView group2 = findViewById(R.id.group2);
+        final TextView group3 = findViewById(R.id.group3);
+        final TextView group4 = findViewById(R.id.group4);
 
         textViewList.add(group1);
         textViewList.add(group2);
         textViewList.add(group3);
         textViewList.add(group4);
         checkVisibility();
+
+        group1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Dashboard.this, GroupView.class);
+                intent.putExtra("groupId", groupMap.get(group1.getId()));
+                intent.putExtra("groupTitle", groupNames.get(0));
+                startActivity(intent);
+            }
+        });
+
+        group2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Dashboard.this, GroupView.class);
+                intent.putExtra("groupId", groupMap.get(group2.getId()));
+                intent.putExtra("groupTitle", groupNames.get(1));
+                startActivity(intent);
+            }
+        });
+
+        group3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Dashboard.this, GroupView.class);
+                intent.putExtra("groupId", groupMap.get(group3.getId()));
+                intent.putExtra("groupTitle", groupNames.get(2));
+                startActivity(intent);
+            }
+        });
+
+        group4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Dashboard.this, GroupView.class);
+                intent.putExtra("groupId", groupMap.get(group4.getId()));
+                intent.putExtra("groupTitle", groupNames.get(3));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -59,9 +98,11 @@ public class Dashboard extends AppCompatActivity {
         JSONArray jsonArray = ((JSONArray) response);
         for (int i = 0; i < jsonArray.length(); i++) {
             String name = jsonArray.getJSONObject(i).getString("name");
+            String id = jsonArray.getJSONObject(i).getString("id");
             if (i < 4) {
                 textViewList.get(i).setText(name);
             }
+            groupMap.put(textViewList.get(i).getId(), id);
             groupNames.add(name);
         }
         checkVisibility();
