@@ -12,6 +12,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.voteapp.utils.RequestManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +27,7 @@ public class Dashboard extends AppCompatActivity {
     private List<TextView> textViewList = new ArrayList<>();
     private Map<Integer, String> groupMap = new HashMap<Integer, String>();
     private List<String> groupNames = new ArrayList<>();
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class Dashboard extends AppCompatActivity {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
                 intent.putExtra("groupId", groupMap.get(group1.getId()));
                 intent.putExtra("groupTitle", groupNames.get(0));
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -58,6 +61,7 @@ public class Dashboard extends AppCompatActivity {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
                 intent.putExtra("groupId", groupMap.get(group2.getId()));
                 intent.putExtra("groupTitle", groupNames.get(1));
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -68,6 +72,7 @@ public class Dashboard extends AppCompatActivity {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
                 intent.putExtra("groupId", groupMap.get(group3.getId()));
                 intent.putExtra("groupTitle", groupNames.get(2));
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -78,6 +83,7 @@ public class Dashboard extends AppCompatActivity {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
                 intent.putExtra("groupId", groupMap.get(group4.getId()));
                 intent.putExtra("groupTitle", groupNames.get(3));
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -87,7 +93,8 @@ public class Dashboard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
-        String userId = intent.getStringExtra("userId");
+        userId = intent.getStringExtra("userId");
+        Log.e("Dashboard", "user Id= " +userId);
         getUserInfoApiRequest(userId);
     }
 

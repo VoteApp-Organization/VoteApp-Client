@@ -1,6 +1,5 @@
 package com.example.voteapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.voteapp.utils.RequestManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
