@@ -27,6 +27,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
 
     private TextView surveyTitle;
     private Button startSurvey;
+    private Button backButton;
     private String groupId;
     private String surveyId;
     private String userId;
@@ -42,6 +43,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
 
         surveyTitle = findViewById(R.id.surveyTitle);
         startSurvey = findViewById(R.id.startSurveyBtn);
+        backButton = findViewById(R.id.backButton);
 
         startSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +59,13 @@ public class SurveyContainerActivity extends AppCompatActivity {
                 intent.putExtra("questionNumber", 0);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

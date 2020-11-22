@@ -16,8 +16,11 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.utils.RequestManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,7 +97,7 @@ public class SingleQuestionActivity extends AppCompatActivity {
     }
 
     private void saveAnswer() {
-        VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), answerContent.getText().toString());
+        VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), answerContent.getText().toString().trim());
         voteAnswers.add(voteAnswer);
     }
 
@@ -112,24 +115,20 @@ public class SingleQuestionActivity extends AppCompatActivity {
     }
 
     private void sendPostRequestToSaveAnswers() throws JSONException {
-        JSONArray list = new JSONArray();
-        for (VoteAnswer oneAnswer : voteAnswers) {
-            JSONObject answerJSON = new JSONObject();
-            answerJSON.put("id", oneAnswer.getId());
-            answerJSON.put("vote_id", oneAnswer.getVote_Id());
-            answerJSON.put("answerContent", oneAnswer.getAnswerContent());
-            list.put(answerJSON);
-        }
-        JSONObject jObject = new JSONObject().put("answers", list);
-        Log.e("SingleQuestionActivity", "" + jObject);
+        Gson gson = new Gson();
+        String element = gson.toJson(
+                voteAnswers,
+                new TypeToken<ArrayList<VoteAnswer>>() {
+                }.getType());
+        JSONArray list = new JSONArray(element);
+        Log.e("SingleQuestionActivity", "Body: " + list);
 
         String URL = "https://voteaplication.herokuapp.com/saveAnswers";
-
         RequestManager requestManager = RequestManager.getInstance(this);
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, jObject,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, URL, list,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         backToGroupView();
                     }
                 },
@@ -141,7 +140,7 @@ public class SingleQuestionActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-        requestManager.addToRequestQueue(jsObjRequest);
+        requestManager.addToRequestQueue(jsonArrayRequest);
     }
 
     @Override
