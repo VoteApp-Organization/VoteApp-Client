@@ -1,14 +1,15 @@
 package com.example.voteapp;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class VoteAnswer implements Serializable {
 
     private Long question_id;
     private Long vote_id;
-    private String answerContent;
+    private List<String> answerContent;
 
-    public VoteAnswer(Long question_id, Long vote_id, String answerContent) {
+    public VoteAnswer(Long question_id, Long vote_id, List<String> answerContent) {
         this.question_id = question_id;
         this.vote_id = vote_id;
         this.answerContent = answerContent;
@@ -38,11 +39,11 @@ public class VoteAnswer implements Serializable {
         this.vote_id = vote_Id;
     }
 
-    public String getAnswerContent() {
+    public List<String> getAnswerContent() {
         return answerContent;
     }
 
-    public void setAnswerContent(String answerContent) {
+    public void setAnswerContent(List<String> answerContent) {
         this.answerContent = answerContent;
     }
 }

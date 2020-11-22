@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/custom_container_shadow_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,7 @@
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/custom_small_container"
         android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +52,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/custom_small_container"
         android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,14 +78,14 @@
 
         <LinearLayout
             android:id="@+id/cardGroup1"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:orientation="horizontal"
-            android:background="@drawable/custom_small_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:background="@drawable/custom_small_container"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintHorizontal_bias="0.080"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
             app:layout_constraintVertical_bias="0.0">
@@ -93,23 +93,25 @@
             <ImageView
                 android:id="@+id/group1image"
                 android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
+                android:paddingVertical="10dp"
                 android:src="@drawable/flag" />
 
             <TextView
-                android:id="@+id/group3"
-                android:layout_width="match_parent"
+                android:id="@+id/group1"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:ems="10"
-                android:gravity="center_vertical"
                 android:layout_marginRight="3dp"
-                android:text=""
-                android:fontFamily="sans-serif-medium"
-                android:textSize="16dp"
                 android:ellipsize="end"
+                android:ems="5"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:maxWidth="50dp"
                 android:maxLines="1"
+                android:text=""
+                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.072"
@@ -121,8 +123,8 @@
 
         <LinearLayout
             android:id="@+id/cardGroup3"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@drawable/custom_small_container"
             android:layout_marginTop="15dp"
@@ -136,23 +138,24 @@
             <ImageView
                 android:id="@+id/group3image"
                 android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
+                android:paddingVertical="10dp"
                 android:src="@drawable/dorm" />
 
             <TextView
-                android:id="@+id/group1"
-                android:layout_width="match_parent"
+                android:id="@+id/group3"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:text=""
-                android:fontFamily="sans-serif-medium"
                 android:layout_marginRight="3dp"
-                android:textSize="16dp"
                 android:ellipsize="end"
+                android:ems="5"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
                 android:maxLines="1"
+                android:text=""
+                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.072"
@@ -165,34 +168,35 @@
 
         <LinearLayout
             android:id="@+id/cardGroup2"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@drawable/custom_small_container"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.9"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.555"
+            app:layout_constraintStart_toEndOf="@+id/cardGroup1"
             app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
                 android:id="@+id/group2image"
                 android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
+                android:paddingVertical="10dp"
                 android:src="@drawable/school" />
 
             <TextView
                 android:id="@+id/group2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:ellipsize="end"
-                android:ems="10"
-                android:fontFamily="sans-serif-medium"
                 android:layout_marginRight="3dp"
+                android:ellipsize="end"
+                android:ems="5"
+                android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text=""
@@ -208,34 +212,35 @@
 
         <LinearLayout
             android:id="@+id/cardGroup4"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/custom_small_container"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.92"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.555"
+            app:layout_constraintStart_toEndOf="@+id/cardGroup3"
             app:layout_constraintTop_toBottomOf="@+id/cardGroup2"
-            app:layout_constraintVertical_bias="0.138">
+            app:layout_constraintVertical_bias="0.156">
 
             <ImageView
                 android:id="@+id/group4image"
                 android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
+                android:paddingVertical="10dp"
                 android:src="@drawable/party" />
 
             <TextView
                 android:id="@+id/group4"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
                 android:ellipsize="end"
-                android:ems="10"
+                android:ems="5"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
-                android:layout_marginRight="3dp"
                 android:maxLines="1"
                 android:text=""
                 android:textSize="16dp"
@@ -256,11 +261,12 @@
             android:text="Create new group"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
+            android:layout_marginVertical="15dp"
             android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
+            app:layout_constraintTop_toBottomOf="@+id/cardGroup3"
             app:layout_constraintVertical_bias="0.911" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -296,8 +302,8 @@
 
         <LinearLayout
             android:id="@+id/card"
-            android:layout_width="140dp"
-            android:layout_height="130dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/custom_small_container"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -317,9 +323,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:ems="10"
+                    android:ems="5"
+                    android:layout_marginHorizontal="10dp"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:text="Budget"
                     android:textSize="20dp"
                     app:layout_constraintVertical_bias="0.195" />
@@ -329,10 +337,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:ems="10"
+                    android:ems="6"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:text="195 members"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     app:layout_constraintVertical_bias="0.095" />
 
                 <TextView
@@ -340,16 +349,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:ems="10"
+                    android:ems="6"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:text="23 surveys"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     app:layout_constraintVertical_bias="0.095" />
 
                 <ImageView
                     android:id="@+id/publicGroup1image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
                     android:layout_marginVertical="7dp"
                     android:src="@drawable/budget" />
 
@@ -359,8 +370,8 @@
 
         <LinearLayout
             android:id="@+id/card2"
-            android:layout_width="140dp"
-            android:layout_height="130dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/custom_small_container"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -378,9 +389,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:ems="10"
+                    android:layout_marginHorizontal="10dp"
+                    android:ems="5"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:text="Warsaw"
                     android:textSize="20dp"
                     app:layout_constraintVertical_bias="0.195" />
@@ -389,10 +402,11 @@
                     android:id="@+id/publicGroup2members"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:ems="6"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:text="535 members"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:layout_marginTop="2dp"
                     app:layout_constraintVertical_bias="0.095" />
 
@@ -400,18 +414,21 @@
                     android:id="@+id/publicGroup2surveys"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:ems="6"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:text="48 surveys"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:layout_marginTop="2dp"
                     app:layout_constraintVertical_bias="0.095" />
 
                 <ImageView
                     android:id="@+id/publicGroup2image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginVertical="7dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:src="@drawable/city"/>
 
             </LinearLayout>
