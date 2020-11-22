@@ -100,7 +100,7 @@
                 android:src="@drawable/flag" />
 
             <TextView
-                android:id="@+id/group3"
+                android:id="@+id/group1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="3dp"
@@ -145,7 +145,7 @@
                 android:src="@drawable/dorm" />
 
             <TextView
-                android:id="@+id/group1"
+                android:id="@+id/group3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="3dp"

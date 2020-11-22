@@ -16,8 +16,8 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.voteapp.utils.CustomAnswerAdapter;
 import com.example.voteapp.utils.RequestManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,6 +44,8 @@ public class SingleQuestionActivity extends AppCompatActivity {
     private List<VoteAnswer> voteAnswers = new ArrayList<>();
     private ProgressBar mProgressBar;
     private int mProgressStatus = 0;
+    private String typeOfQuestion;
+    CustomAnswerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +99,30 @@ public class SingleQuestionActivity extends AppCompatActivity {
     }
 
     private void saveAnswer() {
-        VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), answerContent.getText().toString().trim());
+        List<String> listOfAnswers = new ArrayList<>();
+        if (typeOfQuestion.equals("Picklist")) {
+            listOfAnswers = adapter.getClickedItems();
+        } else {
+            listOfAnswers.add(answerContent.getText().toString());
+        }
+        VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), listOfAnswers);
         voteAnswers.add(voteAnswer);
     }
 
     private void setupQuestion() {
-        questionContent.setText(allQuestions.get(number).getQuestionContent());
         questionNumber.setText((number + 1) + " of " + allQuestions.size());
+        questionContent.setText(allQuestions.get(number).getQuestionContent());
+        typeOfQuestion = allQuestions.get(number).getQuestionType();
+        if (typeOfQuestion.equals("Picklist")) {
+            listViewOfAsnwers.setVisibility(View.VISIBLE);
+            answerContent.setVisibility(View.INVISIBLE);
+            adapter = new CustomAnswerAdapter(this, allQuestions.get(number).getPicklistValues(), false);
+            listViewOfAsnwers.setAdapter(adapter);
+
+        } else {
+            listViewOfAsnwers.setVisibility(View.INVISIBLE);
+            answerContent.setVisibility(View.VISIBLE);
+        }
 
         final int divide = 100 / allQuestions.size() * (number + 1);
         mProgressStatus += divide;
@@ -121,14 +140,16 @@ public class SingleQuestionActivity extends AppCompatActivity {
                 new TypeToken<ArrayList<VoteAnswer>>() {
                 }.getType());
         JSONArray list = new JSONArray(element);
-        Log.e("SingleQuestionActivity", "Body: " + list);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("answers", list);
+        Log.e("SingleQuestionActivity", "" + jsonObject);
 
         String URL = "https://voteaplication.herokuapp.com/saveAnswers";
         RequestManager requestManager = RequestManager.getInstance(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, URL, list,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObject,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         backToGroupView();
                     }
                 },
