@@ -4,30 +4,38 @@ import java.io.Serializable;
 
 public class VoteAnswer implements Serializable {
 
-    private Long id;
-    private Long vote_Id;
+    private Long question_id;
+    private Long vote_id;
     private String answerContent;
 
-    public VoteAnswer(Long id, Long vote_Id, String answerContent) {
-        this.id = id;
-        this.vote_Id = vote_Id;
+    public VoteAnswer(Long question_id, Long vote_id, String answerContent) {
+        this.question_id = question_id;
+        this.vote_id = vote_id;
         this.answerContent = answerContent;
     }
 
-    public Long getId() {
-        return id;
+    public Long getQuestion_id() {
+        return question_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setQuestion_id(Long question_id) {
+        this.question_id = question_id;
+    }
+
+    public Long getVote_id() {
+        return vote_id;
+    }
+
+    public void setVote_id(Long vote_id) {
+        this.vote_id = vote_id;
     }
 
     public Long getVote_Id() {
-        return vote_Id;
+        return vote_id;
     }
 
     public void setVote_Id(Long vote_Id) {
-        this.vote_Id = vote_Id;
+        this.vote_id = vote_Id;
     }
 
     public String getAnswerContent() {

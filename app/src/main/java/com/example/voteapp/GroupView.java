@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +28,7 @@ import java.util.List;
 public class GroupView extends AppCompatActivity {
     final List<Survey> allSurveys = new ArrayList<>();
     private TextView groupTitle;
+    private Button backButton;
     private ListView list;
     private String userId;
     private String groupId;
@@ -36,8 +40,14 @@ public class GroupView extends AppCompatActivity {
         setContentView(R.layout.activity_group_view);
 
         groupTitle = findViewById(R.id.groupTitle);
+        backButton = findViewById(R.id.backButton);
 
-
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

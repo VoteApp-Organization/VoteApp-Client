@@ -2,10 +2,14 @@ package com.example.voteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,11 +32,17 @@ public class Dashboard extends AppCompatActivity {
     private Map<Integer, String> groupMap = new HashMap<Integer, String>();
     private List<String> groupNames = new ArrayList<>();
     private String userId;
+    private Button buttonCreate;
+    private Button buttonCreate2;
+    private Dialog customDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        buttonCreate = findViewById(R.id.buttonCreate);
+
         final TextView group1 = findViewById(R.id.group1);
         final TextView group2 = findViewById(R.id.group2);
         final TextView group3 = findViewById(R.id.group3);
@@ -85,6 +95,24 @@ public class Dashboard extends AppCompatActivity {
                 intent.putExtra("groupTitle", groupNames.get(3));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
+            }
+        });
+
+        customDialog = new Dialog(this);
+        buttonCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.setContentView(R.layout.custom_dialog);
+                buttonCreate2 = customDialog.findViewById(R.id.buttonCreate2);
+                buttonCreate2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        customDialog.dismiss();
+                    }
+                });
+
+                customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                customDialog.show();
             }
         });
     }

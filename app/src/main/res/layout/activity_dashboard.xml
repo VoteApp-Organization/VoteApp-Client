@@ -7,19 +7,33 @@
     tools:context=".Dashboard">
 
 
-    <TextView
-        android:id="@+id/activityTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dashboard"
-        android:textSize="35dp"
-        android:fontFamily="sans-serif-medium"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_container_shadow_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/activityTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Dashboard"
+            android:textSize="35dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.666" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <SearchView
         android:id="@+id/searchView"
@@ -30,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activityTitleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
         app:layout_constraintVertical_bias="0.03" />
 
 
@@ -44,7 +58,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
-        app:layout_constraintVertical_bias="0.05" >
+        app:layout_constraintVertical_bias="0.05">
 
         <TextView
             android:id="@+id/yourGroupsTextView"
@@ -64,11 +78,11 @@
             android:id="@+id/group1"
             android:layout_width="140dp"
             android:layout_height="60dp"
-            android:ems="10"
-            android:text=""
-            android:gravity="center"
-            android:textSize="16dp"
             android:background="@drawable/custom_small_container"
+            android:ems="10"
+            android:gravity="center"
+            android:text=""
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.072"
@@ -81,10 +95,10 @@
             android:layout_width="140dp"
             android:layout_height="60dp"
             android:background="@drawable/custom_small_container"
-            android:textSize="16dp"
             android:ems="10"
             android:gravity="center"
             android:text=""
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/group1"
@@ -96,19 +110,19 @@
             android:layout_width="140dp"
             android:layout_height="60dp"
             android:background="@drawable/custom_small_container"
-            android:ems="10"
-            android:textSize="16dp"
-            android:gravity="center"
             android:ellipsize="end"
+            android:ems="10"
+            android:gravity="center"
             android:maxLines="1"
+            android:singleLine="true"
             android:text=""
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.068"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group1"
-            app:layout_constraintVertical_bias="0.15"
-            android:singleLine="true" />
+            app:layout_constraintVertical_bias="0.15" />
 
         <TextView
             android:id="@+id/group4"
@@ -116,9 +130,9 @@
             android:layout_height="60dp"
             android:background="@drawable/custom_small_container"
             android:ems="10"
-            android:textSize="16dp"
             android:gravity="center"
             android:text=""
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.593"
