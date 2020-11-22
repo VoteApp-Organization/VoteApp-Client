@@ -37,9 +37,10 @@
 
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/custom_container"
+        android:background="@drawable/custom_small_container"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
@@ -50,9 +51,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="330dp"
-        android:layout_height="300dp"
-        android:background="@drawable/custom_container"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="@drawable/custom_small_container"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -74,72 +76,177 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.050" />
 
-        <TextView
-            android:id="@+id/group1"
+        <LinearLayout
+            android:id="@+id/cardGroup1"
             android:layout_width="140dp"
             android:layout_height="60dp"
+            android:orientation="horizontal"
             android:background="@drawable/custom_small_container"
-            android:ems="10"
-            android:gravity="center"
-            android:text=""
-            android:textSize="16dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.072"
+            app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/group2"
+            <ImageView
+                android:id="@+id/group1image"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:src="@drawable/flag" />
+
+            <TextView
+                android:id="@+id/group3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:layout_marginRight="3dp"
+                android:text=""
+                android:fontFamily="sans-serif-medium"
+                android:textSize="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.072"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
+                app:layout_constraintVertical_bias="0.1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cardGroup3"
             android:layout_width="140dp"
             android:layout_height="60dp"
+            android:orientation="horizontal"
             android:background="@drawable/custom_small_container"
-            android:ems="10"
-            android:gravity="center"
-            android:text=""
-            android:textSize="16dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/group1"
-            app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
-            app:layout_constraintVertical_bias="0.095" />
-
-        <TextView
-            android:id="@+id/group3"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:background="@drawable/custom_small_container"
-            android:ellipsize="end"
-            android:ems="10"
-            android:gravity="center"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text=""
-            android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.068"
+            app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group1"
-            app:layout_constraintVertical_bias="0.15" />
+            app:layout_constraintTop_toBottomOf="@+id/cardGroup1"
+            app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/group4"
+            <ImageView
+                android:id="@+id/group3image"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:src="@drawable/dorm" />
+
+            <TextView
+                android:id="@+id/group1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:text=""
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginRight="3dp"
+                android:textSize="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.072"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
+                app:layout_constraintVertical_bias="0.1" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/cardGroup2"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_small_container"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
+            app:layout_constraintVertical_bias="0.0">
+
+            <ImageView
+                android:id="@+id/group2image"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:src="@drawable/school" />
+
+            <TextView
+                android:id="@+id/group2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginRight="3dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text=""
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.072"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
+                app:layout_constraintVertical_bias="0.1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cardGroup4"
             android:layout_width="140dp"
             android:layout_height="60dp"
             android:background="@drawable/custom_small_container"
-            android:ems="10"
-            android:gravity="center"
-            android:text=""
-            android:textSize="16dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.593"
-            app:layout_constraintStart_toEndOf="@+id/group1"
-            app:layout_constraintTop_toBottomOf="@+id/group2"
-            app:layout_constraintVertical_bias="0.145" />
+            app:layout_constraintHorizontal_bias="0.92"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardGroup2"
+            app:layout_constraintVertical_bias="0.138">
 
+            <ImageView
+                android:id="@+id/group4image"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:src="@drawable/party" />
+
+            <TextView
+                android:id="@+id/group4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:layout_marginRight="3dp"
+                android:maxLines="1"
+                android:text=""
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.072"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
+                app:layout_constraintVertical_bias="0.1" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonCreate"
@@ -153,8 +260,162 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group3"
-            app:layout_constraintVertical_bias="0.456" />
+            app:layout_constraintTop_toBottomOf="@+id/yourGroupsTextView"
+            app:layout_constraintVertical_bias="0.911" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_small_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        android:paddingBottom="30dp"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.05">
+
+        <TextView
+            android:id="@+id/publicGroupsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Explore"
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.080"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.050" />
+
+        <LinearLayout
+            android:id="@+id/card"
+            android:layout_width="140dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_small_container"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/publicGroupsTextView"
+            app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/publicGroup1title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="Budget"
+                    android:textSize="20dp"
+                    app:layout_constraintVertical_bias="0.195" />
+
+                <TextView
+                    android:id="@+id/publicGroup1members"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:text="195 members"
+                    android:textSize="15dp"
+                    app:layout_constraintVertical_bias="0.095" />
+
+                <TextView
+                    android:id="@+id/publicGroup1surveys"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:text="23 surveys"
+                    android:textSize="15dp"
+                    app:layout_constraintVertical_bias="0.095" />
+
+                <ImageView
+                    android:id="@+id/publicGroup1image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="7dp"
+                    android:src="@drawable/budget" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/card2"
+            android:layout_width="140dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_small_container"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/card"
+            app:layout_constraintTop_toBottomOf="@+id/publicGroupsTextView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/publicGroup2title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="Warsaw"
+                    android:textSize="20dp"
+                    app:layout_constraintVertical_bias="0.195" />
+
+                <TextView
+                    android:id="@+id/publicGroup2members"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:text="535 members"
+                    android:textSize="15dp"
+                    android:layout_marginTop="2dp"
+                    app:layout_constraintVertical_bias="0.095" />
+
+                <TextView
+                    android:id="@+id/publicGroup2surveys"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:text="48 surveys"
+                    android:textSize="15dp"
+                    android:layout_marginTop="2dp"
+                    app:layout_constraintVertical_bias="0.095" />
+
+                <ImageView
+                    android:id="@+id/publicGroup2image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:src="@drawable/city"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

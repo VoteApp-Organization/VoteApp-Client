@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -29,6 +30,7 @@ import java.util.Map;
 public class Dashboard extends AppCompatActivity {
 
     private List<TextView> textViewList = new ArrayList<>();
+    private List<LinearLayout> cardGroupsList = new ArrayList<>();
     private Map<Integer, String> groupMap = new HashMap<Integer, String>();
     private List<String> groupNames = new ArrayList<>();
     private String userId;
@@ -43,6 +45,17 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         buttonCreate = findViewById(R.id.buttonCreate);
 
+        final LinearLayout groupCard1 = findViewById(R.id.cardGroup1);
+        final LinearLayout groupCard2 = findViewById(R.id.cardGroup2);
+        final LinearLayout groupCard3 = findViewById(R.id.cardGroup3);
+        final LinearLayout groupCard4 = findViewById(R.id.cardGroup4);
+
+        cardGroupsList.add(groupCard1);
+        cardGroupsList.add(groupCard2);
+        cardGroupsList.add(groupCard3);
+        cardGroupsList.add(groupCard4);
+
+
         final TextView group1 = findViewById(R.id.group1);
         final TextView group2 = findViewById(R.id.group2);
         final TextView group3 = findViewById(R.id.group3);
@@ -54,7 +67,7 @@ public class Dashboard extends AppCompatActivity {
         textViewList.add(group4);
         checkVisibility();
 
-        group1.setOnClickListener(new View.OnClickListener() {
+        groupCard1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
@@ -65,7 +78,7 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        group2.setOnClickListener(new View.OnClickListener() {
+        groupCard2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
@@ -76,7 +89,7 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        group3.setOnClickListener(new View.OnClickListener() {
+        groupCard3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
@@ -87,7 +100,7 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        group4.setOnClickListener(new View.OnClickListener() {
+        groupCard4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
@@ -122,7 +135,7 @@ public class Dashboard extends AppCompatActivity {
         super.onResume();
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
-        Log.e("Dashboard", "user Id= " +userId);
+        Log.e("Dashboard", "user Id= " + userId);
         getUserInfoApiRequest(userId);
     }
 
@@ -144,15 +157,14 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void checkVisibility() {
-        for (TextView textView : textViewList) {
-            if (textView.getText().toString().isEmpty()) {
-                textView.setVisibility(View.INVISIBLE);
+        for (int i = 0; i < textViewList.size(); i++){
+            if (textViewList.get(i).getText().toString().isEmpty()) {
+                cardGroupsList.get(i).setVisibility(View.INVISIBLE);
             } else {
-                textView.setVisibility(View.VISIBLE);
+                cardGroupsList.get(i).setVisibility(View.VISIBLE);
             }
         }
     }
-
 
     private void getUserInfoApiRequest(String userId) {
         RequestManager requestManager = RequestManager.getInstance(this);
