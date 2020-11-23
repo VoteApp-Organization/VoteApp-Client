@@ -1,7 +1,9 @@
 package com.example.voteapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,12 +17,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.utils.CustomAdapter;
 import com.example.voteapp.utils.RequestManager;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,7 @@ public class GroupView extends AppCompatActivity {
     final List<Survey> allSurveys = new ArrayList<>();
     private TextView groupTitle;
     private Button backButton;
+    private Button leaveButton;
     private ListView list;
     private String userId;
     private String groupId;
@@ -41,11 +46,39 @@ public class GroupView extends AppCompatActivity {
 
         groupTitle = findViewById(R.id.groupTitle);
         backButton = findViewById(R.id.backButton);
+        leaveButton = findViewById(R.id.buttonLeaveGroup);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        leaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(GroupView.this)
+                        .setTitle("Leave group")
+                        .setMessage("Are you sure you want to leave from this group?")
+
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    sendPostLeaveGroup();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
             }
         });
     }
@@ -114,5 +147,32 @@ public class GroupView extends AppCompatActivity {
         intent.putExtra("userId", userId);
         intent.putExtra("groupTitle", title);
         startActivity(intent);
+    }
+
+    private void sendPostLeaveGroup() throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("user_Id", Long.valueOf(userId));
+        obj.put("vote_Id", 10);
+        obj.put("group_Id", Long.valueOf(groupId));
+
+        String URL = "https://voteaplication.herokuapp.com/leaveGroup";
+        Log.w("GroupView", obj.toString());
+
+        RequestManager requestManager = RequestManager.getInstance(this);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, obj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("Response", response.toString());
+                        onBackPressed();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.w("GroupView", "leaveGroup:failure", error.getCause());
+                    }
+                });
+        requestManager.addToRequestQueue(jsObjRequest);
     }
 }
