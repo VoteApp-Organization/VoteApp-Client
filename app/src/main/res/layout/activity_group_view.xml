@@ -26,6 +26,8 @@
             android:fontFamily="sans-serif-medium"
             android:text="GroupName"
             android:textSize="35dp"
+            android:ems="5"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
@@ -37,12 +39,28 @@
             android:id="@+id/backButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:background="@drawable/arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintHorizontal_bias="0.041"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/buttonLeaveGroup"
+            android:layout_width="55dp"
+            android:layout_height="25dp"
+            android:background="@drawable/custom_button"
+            android:text="Leave"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.609"
+            app:layout_constraintStart_toEndOf="@+id/groupTitle"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/arrow_back" />
+            app:layout_constraintVertical_bias="0.52" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
