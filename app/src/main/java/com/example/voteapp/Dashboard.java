@@ -9,11 +9,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -48,6 +52,14 @@ public class Dashboard extends AppCompatActivity {
     private EditText createGroupPassword;
     private TextView createGroupPasswordLabel;
     private ImageView picture;
+    private SearchView searchView;
+    private ListView searchingListView;
+    private ListAdapter listAdapter;
+    private List<String> searchingList = new ArrayList<String>();
+    private TextView group1;
+    private TextView group2;
+    private TextView group3;
+    private TextView group4;
 
 
     @Override
@@ -55,28 +67,160 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         buttonCreate = findViewById(R.id.buttonCreate);
+        searchView = findViewById(R.id.searchView);
+        searchingListView = findViewById(R.id.searchingListView);
 
-        final LinearLayout groupCard1 = findViewById(R.id.cardGroup1);
-        final LinearLayout groupCard2 = findViewById(R.id.cardGroup2);
-        final LinearLayout groupCard3 = findViewById(R.id.cardGroup3);
-        final LinearLayout groupCard4 = findViewById(R.id.cardGroup4);
+        checkVisibility();
+
+        customDialog = new Dialog(this);
+        buttonCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.setContentView(R.layout.custom_dialog);
+                createGroupName = customDialog.findViewById(R.id.groupNameEditText);
+                createGroupPassword = customDialog.findViewById(R.id.groupPasswordEditText);
+                createGroupPasswordLabel = customDialog.findViewById(R.id.createGroupPasswordLabel);
+                isPublic = customDialog.findViewById(R.id.isPublic);
+                picture = customDialog.findViewById(R.id.createGroupImage);
+                buttonCreate2 = customDialog.findViewById(R.id.buttonCreate2);
+
+                picture.setImageResource(R.drawable.tools);
+                picture.setTag(R.drawable.tools);
+                final String name = getResources().getResourceName((Integer) picture.getTag());
+
+                isPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            createGroupPassword.setVisibility(View.GONE);
+                            createGroupPasswordLabel.setVisibility(View.GONE);
+                        } else {
+                            createGroupPassword.setVisibility(View.VISIBLE);
+                            createGroupPasswordLabel.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+                buttonCreate2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            sendPostCreateGroup(createGroupName.getText().toString(), isPublic.isChecked(), createGroupPassword.getText().toString(), name);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        customDialog.dismiss();
+                    }
+                });
+                customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                customDialog.show();
+            }
+        });
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.e("queryText", query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() > 0) {
+                    getGroupByName(newText);
+                } else {
+                    searchingListView.setVisibility(View.GONE);
+                }
+                Log.e("queryText", newText);
+                return false;
+            }
+        });
+    }
+
+    private void sendPostCreateGroup(String name, boolean isPublic, String password, String pictureName) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("name", name);
+        obj.put("description", "");
+        obj.put("groupPasword", password);
+        obj.put("public", isPublic);
+        obj.put("pictureName", pictureName);
+        obj.put("owner_id", Long.valueOf(userId));
+
+        String URL = "https://voteaplication.herokuapp.com/createNewGroup";
+        Log.w("Dashboard", obj.toString());
+
+        RequestManager requestManager = RequestManager.getInstance(this);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, obj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("Response", response.toString());
+                        getUserInfoApiRequest(userId);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.w("Dashboard", "createGroup:failure", error.getCause());
+                    }
+                });
+        requestManager.addToRequestQueue(jsObjRequest);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
+        Log.e("Dashboard", "user Id= " + userId);
+        getUserInfoApiRequest(userId);
+    }
+
+    private void parseUserGroups(Object response) throws JSONException {
+        groupNames.clear();
+        for (TextView textView : textViewList) {
+            textView.setText("");
+        }
+        JSONArray jsonArray = ((JSONArray) response);
+        for (int i = 0; i < jsonArray.length() && i < 4; i++) {
+            String name = jsonArray.getJSONObject(i).getString("name");
+            String id = jsonArray.getJSONObject(i).getString("id");
+
+            textViewList.get(i).setText(name);
+            groupMap.put(textViewList.get(i).getId(), id);
+            groupNames.add(name);
+        }
+        checkVisibility();
+    }
+
+    private void checkVisibility() {
+        for (int i = 0; i < textViewList.size(); i++) {
+            if (textViewList.get(i).getText().toString().isEmpty()) {
+                cardGroupsList.get(i).setVisibility(View.INVISIBLE);
+            } else {
+                cardGroupsList.get(i).setVisibility(View.VISIBLE);
+            }
+        }
+
+        LinearLayout groupCard1 = findViewById(R.id.cardGroup1);
+        LinearLayout groupCard2 = findViewById(R.id.cardGroup2);
+        LinearLayout groupCard3 = findViewById(R.id.cardGroup3);
+        LinearLayout groupCard4 = findViewById(R.id.cardGroup4);
 
         cardGroupsList.add(groupCard1);
         cardGroupsList.add(groupCard2);
         cardGroupsList.add(groupCard3);
         cardGroupsList.add(groupCard4);
 
-
-        final TextView group1 = findViewById(R.id.group1);
-        final TextView group2 = findViewById(R.id.group2);
-        final TextView group3 = findViewById(R.id.group3);
-        final TextView group4 = findViewById(R.id.group4);
-
-        textViewList.add(group1);
-        textViewList.add(group2);
-        textViewList.add(group3);
-        textViewList.add(group4);
-        checkVisibility();
+        textViewList.add(group1 = findViewById(R.id.group1));
+        textViewList.add(group2 = findViewById(R.id.group2));
+        textViewList.add(group3 = findViewById(R.id.group3));
+        textViewList.add(group4 = findViewById(R.id.group4));
 
         groupCard1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,117 +265,6 @@ public class Dashboard extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        customDialog = new Dialog(this);
-        buttonCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customDialog.setContentView(R.layout.custom_dialog);
-                createGroupName = customDialog.findViewById(R.id.groupNameEditText);
-                createGroupPassword = customDialog.findViewById(R.id.groupPasswordEditText);
-                createGroupPasswordLabel = customDialog.findViewById(R.id.createGroupPasswordLabel);
-                isPublic = customDialog.findViewById(R.id.isPublic);
-                picture = customDialog.findViewById(R.id.createGroupImage);
-                buttonCreate2 = customDialog.findViewById(R.id.buttonCreate2);
-
-                picture.setImageResource(R.drawable.tools);
-                picture.setTag(R.drawable.tools);
-                final String name = getResources().getResourceName((Integer)picture.getTag());
-
-                isPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(isChecked){
-                            createGroupPassword.setVisibility(View.GONE);
-                            createGroupPasswordLabel.setVisibility(View.GONE);
-                        }
-                        else{
-                            createGroupPassword.setVisibility(View.VISIBLE);
-                            createGroupPasswordLabel.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-
-                buttonCreate2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            sendPostCreateGroup(createGroupName.getText().toString(), isPublic.isChecked(), createGroupPassword.getText().toString(), name);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        customDialog.dismiss();
-                    }
-                });
-
-                customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                customDialog.show();
-            }
-        });
-    }
-
-    private void sendPostCreateGroup(String name, boolean isPublic, String password, String pictureName) throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("name", name);
-        obj.put("description", "");
-        obj.put("password", password);
-        obj.put("isPublic", isPublic);
-        obj.put("pictureName", pictureName);
-        obj.put("owner_id", Long.valueOf(userId));
-
-        String URL = "https://voteaplication.herokuapp.com/createNewGroup";
-        Log.w("Dashboard", obj.toString());
-
-        RequestManager requestManager = RequestManager.getInstance(this);
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, obj,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.e("Response", response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.w("Dashboard", "createGroup:failure", error.getCause());
-                    }
-                });
-        requestManager.addToRequestQueue(jsObjRequest);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Intent intent = getIntent();
-        userId = intent.getStringExtra("userId");
-        Log.e("Dashboard", "user Id= " + userId);
-        getUserInfoApiRequest(userId);
-    }
-
-    private void parseUserGroups(Object response) throws JSONException {
-        for (TextView textView : textViewList) {
-            textView.setText("");
-        }
-        JSONArray jsonArray = ((JSONArray) response);
-        for (int i = 0; i < jsonArray.length(); i++) {
-            String name = jsonArray.getJSONObject(i).getString("name");
-            String id = jsonArray.getJSONObject(i).getString("id");
-            if (i < 4) {
-                textViewList.get(i).setText(name);
-            }
-            groupMap.put(textViewList.get(i).getId(), id);
-            groupNames.add(name);
-        }
-        checkVisibility();
-    }
-
-    private void checkVisibility() {
-        for (int i = 0; i < textViewList.size(); i++){
-            if (textViewList.get(i).getText().toString().isEmpty()) {
-                cardGroupsList.get(i).setVisibility(View.INVISIBLE);
-            } else {
-                cardGroupsList.get(i).setVisibility(View.VISIBLE);
-            }
-        }
     }
 
     private void getUserInfoApiRequest(String userId) {
@@ -250,15 +283,47 @@ public class Dashboard extends AppCompatActivity {
                 }
             }
         }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("API error: ", "#onErrorResponse in Dashboard");
+            }
+        });
+        requestManager.addToRequestQueue(request);
+    }
+
+    private void getGroupByName(String name) {
+        RequestManager requestManager = RequestManager.getInstance(this);
+        String URL = "https://voteaplication.herokuapp.com/getGroupsByName/" + "?searchName=" + name;
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                searchingList.clear();
+                Log.e("Response", response.toString());
+                for (int i = 0; i < response.length() && i < 4; i++) {
+                    String name = null;
+                    try {
+                        name = response.getJSONObject(i).getString("name");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    searchingList.add(name);
+                }
+                refreshList();
+            }
+        }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("API error: ", "#onErrorResponse in Dashboard");
             }
         });
-
         requestManager.addToRequestQueue(request);
     }
 
-
+    private void refreshList() {
+        searchingListView.setVisibility(View.VISIBLE);
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(Dashboard.this, android.R.layout.simple_list_item_1, searchingList);
+        searchingListView.setAdapter(itemsAdapter);
+    }
 }

@@ -42,6 +42,21 @@ public class CustomAdapter extends BaseAdapter {
 
         imageList.add(R.drawable.politicians);
         imageList.add(R.drawable.budget);
+        imageList.add(R.drawable.politicians);
+        imageList.add(R.drawable.budget);
+        imageList.add(R.drawable.politicians);
+        imageList.add(R.drawable.budget);
+        imageList.add(R.drawable.politicians);
+        imageList.add(R.drawable.budget);
+        imageList.add(R.drawable.politicians);
+        imageList.add(R.drawable.budget);
+        imageList.add(R.drawable.politicians);
+        imageList.add(R.drawable.budget);
+        imageList.add(R.drawable.politicians);
+        imageList.add(R.drawable.budget);
+        imageList.add(R.drawable.politicians);
+        imageList.add(R.drawable.budget);
+
     }
 
     @Override
@@ -51,6 +66,8 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
+
+
         return null;
     }
 
@@ -58,7 +75,6 @@ public class CustomAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
-
 
     @SuppressLint("ViewHolder")
     @Override
@@ -94,7 +110,7 @@ public class CustomAdapter extends BaseAdapter {
             Survey str = surveyList.get(position);
             titleTextView.setText(str.getVoteTitle());
             numberOfQuestions.setText("(" + str.getNumberOfQuestions() + " questions)");
-            surveyIcon.setImageResource(imageList.get(position));
+          //  surveyIcon.setImageResource(imageList.get(position));
             if(position != 0){
                 layout.getBackground().setColorFilter(greyFilter);
                 buttonOpenSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
