@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.utils.RequestManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +63,10 @@ public class Dashboard extends AppCompatActivity {
     private TextView group4;
 
 
+    private String mAuth;
+    private FirebaseAuth firebaseAuth;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +81,7 @@ public class Dashboard extends AppCompatActivity {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customDialog.setContentView(R.layout.custom_dialog);
+                customDialog.setContentView(R.layout.custom_dialog_create_group);
                 createGroupName = customDialog.findViewById(R.id.groupNameEditText);
                 createGroupPassword = customDialog.findViewById(R.id.groupPasswordEditText);
                 createGroupPasswordLabel = customDialog.findViewById(R.id.createGroupPasswordLabel);
@@ -125,6 +130,9 @@ public class Dashboard extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                System.out.println(FirebaseAuth.getInstance());
+                FirebaseAuth.getInstance().signOut();
+                finish();
                 Log.e("queryText", query);
                 return false;
             }
@@ -177,6 +185,7 @@ public class Dashboard extends AppCompatActivity {
         super.onResume();
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
+        mAuth = intent.getStringExtra("fire");
         Log.e("Dashboard", "user Id= " + userId);
         getUserInfoApiRequest(userId);
     }
