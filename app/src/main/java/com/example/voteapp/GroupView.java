@@ -64,7 +64,7 @@ public class GroupView extends AppCompatActivity {
         createSurveyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createGroup();
+                createSurvey();
             }
         });
 
@@ -103,7 +103,7 @@ public class GroupView extends AppCompatActivity {
         });
     }
 
-    private void createGroup() {
+    private void createSurvey() {
         customDialog.setContentView(R.layout.custom_dialog_create_survey);
         surveyNameEditText = customDialog.findViewById(R.id.surveyNameEditText);
         surveyDescriptionEditText = customDialog.findViewById(R.id.surveyDescriptionEditText);

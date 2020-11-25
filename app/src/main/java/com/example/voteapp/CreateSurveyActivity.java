@@ -4,16 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.utils.CustomAnswerAdapter;
 import com.example.voteapp.utils.CustomQuestionAdapter;
+import com.example.voteapp.utils.RequestManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CreateSurveyActivity extends AppCompatActivity {
     private ListView listViewOfQuestions;
@@ -23,6 +35,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
     private String groupId;
     private String userId;
     private String groupTitle;
+    private String surveyName;
     private List<SingleQuestion> allQuestions = new ArrayList<>();
     private List<String> addedQuestions = new ArrayList<>();
     private List<String> addedQuestions2 = new ArrayList<>();
@@ -87,6 +100,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
         groupId = intent.getStringExtra("groupId");
         userId = intent.getStringExtra("userId");
         groupTitle = intent.getStringExtra("groupTitle");
+        surveyName = intent.getStringExtra("surveyName");
     }
 
     @Override
@@ -94,7 +108,41 @@ public class CreateSurveyActivity extends AppCompatActivity {
         Intent intent = new Intent(CreateSurveyActivity.this, GroupView.class);
         intent.putExtra("userId", userId);
         intent.putExtra("groupId", groupId);
-        intent.putExtra("groupTitle", groupTitle);
+        intent.putExtra("surveyName", surveyName);
         startActivity(intent);
+    }
+
+    private void sendSurvey(final String idToken) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("voteTitle", surveyName);
+        obj.put("description", "");
+        obj.put("author_id", Long.valueOf(userId));
+
+        String URL = "https://voteaplication.herokuapp.com/createNewSurvey";
+
+        RequestManager requestManager = RequestManager.getInstance(this);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, obj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.w("CreateSurveyActivity", "createSurvey:SUCCESS" + response.toString());
+                        onBackPressed();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.w("CreateSurveyActivity", "createSurvey:failure", error.getCause());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("ID-TOKEN", idToken);
+                params.put("group_Id", groupId);
+                return params;
+            }
+        };
+        requestManager.addToRequestQueue(jsObjRequest);
     }
 }
