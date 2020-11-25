@@ -1,8 +1,10 @@
 package com.example.voteapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -46,6 +48,7 @@ public class Dashboard extends AppCompatActivity {
     private List<String> groupNames = new ArrayList<>();
     private String userId;
     private Button buttonCreate;
+    private Button logoutBtn;
     private Button buttonCreate2;
     private Dialog customDialog;
     private Switch isPublic;
@@ -74,6 +77,7 @@ public class Dashboard extends AppCompatActivity {
         buttonCreate = findViewById(R.id.buttonCreate);
         searchView = findViewById(R.id.searchView);
         searchingListView = findViewById(R.id.searchingListView);
+        logoutBtn = findViewById(R.id.logoutBtn);
 
         checkVisibility();
 
@@ -121,6 +125,23 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(Dashboard.this)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to logout?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                logout();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
+
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,9 +151,6 @@ public class Dashboard extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                System.out.println(FirebaseAuth.getInstance());
-                FirebaseAuth.getInstance().signOut();
-                finish();
                 Log.e("queryText", query);
                 return false;
             }
@@ -148,6 +166,14 @@ public class Dashboard extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void logout(){
+        System.out.println(FirebaseAuth.getInstance());
+        FirebaseAuth.getInstance().signOut();
+        finish();
+        Intent intent = new Intent(Dashboard.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     private void sendPostCreateGroup(String name, boolean isPublic, String password, String pictureName) throws JSONException {

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,6 +65,13 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        email.setText("");
+        password.setText("");
     }
 
     private void login() {
@@ -133,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
         };
         requestManager.addToRequestQueue(jsObjRequest);
     }
-/*
+    /*
     private void sendPostRequestToCheckUserExist() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("email", email.getText().toString());
