@@ -3,12 +3,16 @@ package com.example.voteapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,10 +38,16 @@ public class GroupView extends AppCompatActivity {
     private TextView groupTitle;
     private Button backButton;
     private Button leaveButton;
+    private Button createSurveyButton;
     private ListView list;
     private String userId;
     private String groupId;
     private String title;
+    private Dialog customDialog;
+    private EditText surveyNameEditText;
+    private EditText surveyDescriptionEditText;
+    private Button buttonCreate3;
+    private ImageView picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,16 @@ public class GroupView extends AppCompatActivity {
         groupTitle = findViewById(R.id.groupTitle);
         backButton = findViewById(R.id.backButton);
         leaveButton = findViewById(R.id.buttonLeaveGroup);
+        createSurveyButton = findViewById(R.id.createSurveyButton);
+        list = findViewById(R.id.listView);
+
+        customDialog = new Dialog(this);
+        createSurveyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createGroup();
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +103,35 @@ public class GroupView extends AppCompatActivity {
         });
     }
 
+    private void createGroup() {
+        customDialog.setContentView(R.layout.custom_dialog_create_survey);
+        surveyNameEditText = customDialog.findViewById(R.id.surveyNameEditText);
+        surveyDescriptionEditText = customDialog.findViewById(R.id.surveyDescriptionEditText);
+        picture = customDialog.findViewById(R.id.createSurveyImage);
+        buttonCreate3 = customDialog.findViewById(R.id.buttonCreate3);
+
+        picture.setImageResource(R.drawable.tools);
+        picture.setTag(R.drawable.tools);
+        final String name = getResources().getResourceName((Integer) picture.getTag());
+
+        buttonCreate3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GroupView.this, CreateSurveyActivity.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("userId", userId);
+                intent.putExtra("groupTitle", title);
+                intent.putExtra("surveyName", surveyNameEditText.getText().toString());
+                intent.putExtra("surveyDesc", surveyDescriptionEditText.getText().toString());
+                intent.putExtra("picture", name);
+                startActivity(intent);
+                customDialog.dismiss();
+            }
+        });
+        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customDialog.show();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -93,8 +142,6 @@ public class GroupView extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         groupTitle.setText(title);
         getGroupInfoApiRequest(groupId);
-
-        list = (ListView) findViewById(R.id.listView);
     }
 
     private void getGroupInfoApiRequest(String groupId) {
@@ -124,11 +171,12 @@ public class GroupView extends AppCompatActivity {
     }
 
     private void parseGroupInfo(Object response) throws JSONException {
+        allSurveys.clear();
         JSONArray jsonArray = ((JSONArray) response);
         Gson gson = new Gson();
         for (int i = 0; i < jsonArray.length(); i++) {
             allSurveys.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Survey.class));
-           // textViewList.get(i).setText(jsonArray.getJSONObject(i).toString());
+            // textViewList.get(i).setText(jsonArray.getJSONObject(i).toString());
         }
         System.out.println(allSurveys.get(0).getVoteTitle());
 

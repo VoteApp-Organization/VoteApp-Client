@@ -15,7 +15,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.voteapp.LoginActivity;
 import com.example.voteapp.R;
 import com.example.voteapp.Survey;
 import com.example.voteapp.SurveyContainerActivity;
@@ -85,7 +87,7 @@ public class CustomAdapter extends BaseAdapter {
         final TextView titleTextView = (TextView) convertView.findViewById(R.id.surveyTitle);
         TextView numberOfQuestions = (TextView) convertView.findViewById(R.id.surveyNumberOfQuestions);
         ImageView surveyIcon = (ImageView) convertView.findViewById(R.id.surveyIcon);
-        Button buttonOpenSurvey = (Button) convertView.findViewById(R.id.buttonOpenSurvey);
+        final Button buttonOpenSurvey = (Button) convertView.findViewById(R.id.buttonOpenSurvey);
         RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.groupItemLayout);
 
         System.out.println(position);
@@ -94,13 +96,18 @@ public class CustomAdapter extends BaseAdapter {
         buttonOpenSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, SurveyContainerActivity.class);
-                intent.putExtra("groupId", groupId);
-                intent.putExtra("userId", userId);
-                intent.putExtra("groupTitle", groupTitle);
-                intent.putExtra("surveyTitle", titleTextView.getText().toString().trim());
-                intent.putExtra("surveyId", String.valueOf(surveyList.get(position).getVote_Id()));
-                context.startActivity(intent);
+                if (buttonOpenSurvey.getText().equals("Already voted")) {
+                    Toast.makeText(context, "You can vote only once!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(context, SurveyContainerActivity.class);
+                    intent.putExtra("groupId", groupId);
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("groupTitle", groupTitle);
+                    intent.putExtra("surveyTitle", titleTextView.getText().toString().trim());
+                    intent.putExtra("surveyId", String.valueOf(surveyList.get(position).getVote_Id()));
+                    context.startActivity(intent);
+                }
             }
         });
 
@@ -110,8 +117,8 @@ public class CustomAdapter extends BaseAdapter {
             Survey str = surveyList.get(position);
             titleTextView.setText(str.getVoteTitle());
             numberOfQuestions.setText("(" + str.getNumberOfQuestions() + " questions)");
-          //  surveyIcon.setImageResource(imageList.get(position));
-            if(position != 0){
+            //  surveyIcon.setImageResource(imageList.get(position));
+            if (surveyList.get(position).getAnswerHasBeenGiven()) {
                 layout.getBackground().setColorFilter(greyFilter);
                 buttonOpenSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
                 buttonOpenSurvey.setText("Already voted");
