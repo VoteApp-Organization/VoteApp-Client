@@ -64,6 +64,8 @@ public class Dashboard extends AppCompatActivity {
     private TextView group2;
     private TextView group3;
     private TextView group4;
+    private TextView yourGroupsTextView;
+    private TextView noGroupsTextView;
 
 
     private String mAuth;
@@ -78,6 +80,8 @@ public class Dashboard extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
         searchingListView = findViewById(R.id.searchingListView);
         logoutBtn = findViewById(R.id.logoutBtn);
+        yourGroupsTextView = findViewById(R.id.yourGroupsTextView);
+        noGroupsTextView = findViewById(R.id.noGroupsTextView);
 
         checkVisibility();
 
@@ -168,7 +172,7 @@ public class Dashboard extends AppCompatActivity {
         });
     }
 
-    public void logout(){
+    public void logout() {
         System.out.println(FirebaseAuth.getInstance());
         FirebaseAuth.getInstance().signOut();
         finish();
@@ -230,13 +234,21 @@ public class Dashboard extends AppCompatActivity {
             groupMap.put(textViewList.get(i).getId(), id);
             groupNames.add(name);
         }
+
+        if (group1.getText().toString().isEmpty()) {
+            noGroupsTextView.setVisibility(View.VISIBLE);
+            yourGroupsTextView.setVisibility(View.INVISIBLE);
+        } else {
+            noGroupsTextView.setVisibility(View.INVISIBLE);
+            yourGroupsTextView.setVisibility(View.VISIBLE);
+        }
         checkVisibility();
     }
 
     private void checkVisibility() {
         for (int i = 0; i < textViewList.size(); i++) {
             if (textViewList.get(i).getText().toString().isEmpty()) {
-                cardGroupsList.get(i).setVisibility(View.INVISIBLE);
+                cardGroupsList.get(i).setVisibility(View.GONE);
             } else {
                 cardGroupsList.get(i).setVisibility(View.VISIBLE);
             }

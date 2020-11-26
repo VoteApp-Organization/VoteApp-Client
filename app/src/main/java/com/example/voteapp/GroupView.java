@@ -46,6 +46,7 @@ public class GroupView extends AppCompatActivity {
     private Dialog customDialog;
     private EditText surveyNameEditText;
     private EditText surveyDescriptionEditText;
+    private TextView noGroupsTextView;
     private Button buttonCreate3;
     private ImageView picture;
 
@@ -58,6 +59,7 @@ public class GroupView extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         leaveButton = findViewById(R.id.buttonLeaveGroup);
         createSurveyButton = findViewById(R.id.createSurveyButton);
+        noGroupsTextView = findViewById(R.id.noGroupsTextView);
         list = findViewById(R.id.listView);
 
         customDialog = new Dialog(this);
@@ -164,6 +166,11 @@ public class GroupView extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("API error: ", "#onErrorResponse in Dashboard");
+                if(allSurveys != null && !allSurveys.isEmpty()){
+                    noGroupsTextView.setVisibility(View.INVISIBLE);
+                }else{
+                    noGroupsTextView.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -176,13 +183,13 @@ public class GroupView extends AppCompatActivity {
         Gson gson = new Gson();
         for (int i = 0; i < jsonArray.length(); i++) {
             allSurveys.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Survey.class));
-            // textViewList.get(i).setText(jsonArray.getJSONObject(i).toString());
         }
-        System.out.println(allSurveys.get(0).getVoteTitle());
-
-        //   CustomAdapter customAdapter = new CustomAdapter(allSurveys);
-        //    list.setAdapter(customAdapter);
-
+        
+        if (allSurveys.isEmpty()) {
+            noGroupsTextView.setVisibility(View.VISIBLE);
+        } else {
+            noGroupsTextView.setVisibility(View.INVISIBLE);
+        }
         CustomAdapter adapter = new CustomAdapter(this, allSurveys, userId, groupId, title);
         list.setAdapter(adapter);
     }
