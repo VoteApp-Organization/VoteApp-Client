@@ -32,9 +32,8 @@ public class CreateSurveyActivity extends AppCompatActivity {
     private Button previewSurveyBtn;
     private Button cancelSurveyBtn;
     private Button shareSurveyButton;
-    private String groupId;
+    private Group group;
     private String userId;
-    private String groupTitle;
     private String surveyName;
     private List<SingleQuestion> allQuestions = new ArrayList<>();
     private List<String> addedQuestions = new ArrayList<>();
@@ -97,9 +96,8 @@ public class CreateSurveyActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
-        groupId = intent.getStringExtra("groupId");
         userId = intent.getStringExtra("userId");
-        groupTitle = intent.getStringExtra("groupTitle");
+        group = (Group) intent.getSerializableExtra("group");
         surveyName = intent.getStringExtra("surveyName");
     }
 
@@ -107,7 +105,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(CreateSurveyActivity.this, GroupView.class);
         intent.putExtra("userId", userId);
-        intent.putExtra("groupId", groupId);
+        intent.putExtra("group", group);
         intent.putExtra("surveyName", surveyName);
         startActivity(intent);
     }
@@ -139,7 +137,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("ID-TOKEN", idToken);
-                params.put("group_Id", groupId);
+                params.put("group_Id", group.getId());
                 return params;
             }
         };

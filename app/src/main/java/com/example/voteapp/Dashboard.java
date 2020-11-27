@@ -30,22 +30,26 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.utils.RequestManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.String.valueOf;
 
 public class Dashboard extends AppCompatActivity {
 
     private List<TextView> textViewList = new ArrayList<>();
     private List<LinearLayout> cardGroupsList = new ArrayList<>();
     private Map<Integer, String> groupMap = new HashMap<Integer, String>();
-    private List<String> groupNames = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
     private String userId;
     private Button buttonCreate;
     private Button logoutBtn;
@@ -60,12 +64,9 @@ public class Dashboard extends AppCompatActivity {
     private ListView searchingListView;
     private ListAdapter listAdapter;
     private List<String> searchingList = new ArrayList<String>();
-    private TextView group1;
-    private TextView group2;
-    private TextView group3;
-    private TextView group4;
     private TextView yourGroupsTextView;
     private TextView noGroupsTextView;
+    private TextView viewAllGroups;
 
 
     private String mAuth;
@@ -82,8 +83,21 @@ public class Dashboard extends AppCompatActivity {
         logoutBtn = findViewById(R.id.logoutBtn);
         yourGroupsTextView = findViewById(R.id.yourGroupsTextView);
         noGroupsTextView = findViewById(R.id.noGroupsTextView);
+        viewAllGroups = findViewById(R.id.viewAllGroups);
 
         checkVisibility();
+
+        viewAllGroups.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Dashboard.this, AllGroupsActivity.class);
+                Bundle args = new Bundle();
+                args.putSerializable("groups",(Serializable)groups);
+                intent.putExtra("BUNDLE", args);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        });
 
         customDialog = new Dialog(this);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -221,25 +235,27 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void parseUserGroups(Object response) throws JSONException {
-        groupNames.clear();
+        groups.clear();
         for (TextView textView : textViewList) {
             textView.setText("");
         }
-        JSONArray jsonArray = ((JSONArray) response);
-        for (int i = 0; i < jsonArray.length() && i < 4; i++) {
-            String name = jsonArray.getJSONObject(i).getString("name");
-            String id = jsonArray.getJSONObject(i).getString("id");
 
-            textViewList.get(i).setText(name);
-            groupMap.put(textViewList.get(i).getId(), id);
-            groupNames.add(name);
+        JSONArray jsonArray = ((JSONArray) response);
+        Gson gson = new Gson();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            groups.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Group.class));
+            if(i<4){
+                textViewList.get(i).setText(groups.get(i).getName());
+            }
         }
 
-        if (group1.getText().toString().isEmpty()) {
+        if (groups.isEmpty()) {
             noGroupsTextView.setVisibility(View.VISIBLE);
+            viewAllGroups.setVisibility(View.INVISIBLE);
             yourGroupsTextView.setVisibility(View.INVISIBLE);
         } else {
             noGroupsTextView.setVisibility(View.INVISIBLE);
+            viewAllGroups.setVisibility(View.VISIBLE);
             yourGroupsTextView.setVisibility(View.VISIBLE);
         }
         checkVisibility();
@@ -264,17 +280,16 @@ public class Dashboard extends AppCompatActivity {
         cardGroupsList.add(groupCard3);
         cardGroupsList.add(groupCard4);
 
-        textViewList.add(group1 = findViewById(R.id.group1));
-        textViewList.add(group2 = findViewById(R.id.group2));
-        textViewList.add(group3 = findViewById(R.id.group3));
-        textViewList.add(group4 = findViewById(R.id.group4));
+        textViewList.add((TextView) findViewById(R.id.group1));
+        textViewList.add((TextView) findViewById(R.id.group2));
+        textViewList.add((TextView) findViewById(R.id.group3));
+        textViewList.add((TextView) findViewById(R.id.group4));
 
         groupCard1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
-                intent.putExtra("groupId", groupMap.get(group1.getId()));
-                intent.putExtra("groupTitle", groupNames.get(0));
+                intent.putExtra("group", groups.get(0));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
             }
@@ -284,8 +299,7 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
-                intent.putExtra("groupId", groupMap.get(group2.getId()));
-                intent.putExtra("groupTitle", groupNames.get(1));
+                intent.putExtra("group", groups.get(1));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
             }
@@ -295,8 +309,7 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
-                intent.putExtra("groupId", groupMap.get(group3.getId()));
-                intent.putExtra("groupTitle", groupNames.get(2));
+                intent.putExtra("group", groups.get(2));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
             }
@@ -306,8 +319,7 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, GroupView.class);
-                intent.putExtra("groupId", groupMap.get(group4.getId()));
-                intent.putExtra("groupTitle", groupNames.get(3));
+                intent.putExtra("group", groups.get(3));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
             }

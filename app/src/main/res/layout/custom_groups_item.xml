@@ -55,6 +55,20 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="12sp" />
 
+    <TextView
+        android:id="@+id/publicPrivate"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/surveyTitle"
+        android:layout_alignBottom="@id/surveyIcon"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-18dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="44dp"
+        android:gravity="center"
+        android:text="Public"
+        android:textSize="14sp" />
+
     <Button
         android:id="@+id/buttonOpenSurvey"
         android:layout_width="100dp"
@@ -62,9 +76,9 @@
         android:layout_alignBottom="@id/surveyIcon"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="9dp"
         android:background="@drawable/custom_button"
         android:text="Open survey"
         android:textAllCaps="false"
