@@ -46,9 +46,10 @@ public class GroupView extends AppCompatActivity {
     private Dialog customDialog;
     private EditText surveyNameEditText;
     private EditText surveyDescriptionEditText;
-    private TextView noGroupsTextView;
+    private TextView noSurveysTextView;
     private Button buttonCreate3;
     private ImageView picture;
+    private Group group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class GroupView extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         leaveButton = findViewById(R.id.buttonLeaveGroup);
         createSurveyButton = findViewById(R.id.createSurveyButton);
-        noGroupsTextView = findViewById(R.id.noGroupsTextView);
+        noSurveysTextView = findViewById(R.id.noSurveysTextView);
         list = findViewById(R.id.listView);
 
         customDialog = new Dialog(this);
@@ -120,9 +121,8 @@ public class GroupView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GroupView.this, CreateSurveyActivity.class);
-                intent.putExtra("groupId", groupId);
+                intent.putExtra("group", group);
                 intent.putExtra("userId", userId);
-                intent.putExtra("groupTitle", title);
                 intent.putExtra("surveyName", surveyNameEditText.getText().toString());
                 intent.putExtra("surveyDesc", surveyDescriptionEditText.getText().toString());
                 intent.putExtra("picture", name);
@@ -139,11 +139,15 @@ public class GroupView extends AppCompatActivity {
         super.onResume();
 
         Intent intent = getIntent();
-        groupId = intent.getStringExtra("groupId");
-        title = intent.getStringExtra("groupTitle");
+        group = (Group) intent.getSerializableExtra("group");
         userId = intent.getStringExtra("userId");
-        groupTitle.setText(title);
-        getGroupInfoApiRequest(groupId);
+        groupTitle.setText(group.getName());
+        getGroupInfoApiRequest(group.getId());
+        if(group.getOwner_id().equals(userId)){
+            leaveButton.setVisibility(View.INVISIBLE);
+        }else{
+            leaveButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getGroupInfoApiRequest(String groupId) {
@@ -165,11 +169,11 @@ public class GroupView extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("API error: ", "#onErrorResponse in Dashboard");
+                Log.e("API error: ", "#onErrorResponse in GroupView");
                 if(allSurveys != null && !allSurveys.isEmpty()){
-                    noGroupsTextView.setVisibility(View.INVISIBLE);
+                    noSurveysTextView.setVisibility(View.INVISIBLE);
                 }else{
-                    noGroupsTextView.setVisibility(View.VISIBLE);
+                    noSurveysTextView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -186,21 +190,18 @@ public class GroupView extends AppCompatActivity {
         }
         
         if (allSurveys.isEmpty()) {
-            noGroupsTextView.setVisibility(View.VISIBLE);
+            noSurveysTextView.setVisibility(View.VISIBLE);
         } else {
-            noGroupsTextView.setVisibility(View.INVISIBLE);
+            noSurveysTextView.setVisibility(View.INVISIBLE);
         }
-        CustomAdapter adapter = new CustomAdapter(this, allSurveys, userId, groupId, title);
+        CustomAdapter adapter = new CustomAdapter(this, allSurveys, userId, group);
         list.setAdapter(adapter);
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(GroupView.this, Dashboard.class);
-        //  setIntent.addCategory(Intent.CATEGORY_HOME);
-        //   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("userId", userId);
-        intent.putExtra("groupTitle", title);
         startActivity(intent);
     }
 
@@ -208,7 +209,7 @@ public class GroupView extends AppCompatActivity {
         JSONObject obj = new JSONObject();
         obj.put("user_Id", Long.valueOf(userId));
         obj.put("vote_Id", 10);
-        obj.put("group_Id", Long.valueOf(groupId));
+        obj.put("group_Id", Long.valueOf(group.getId()));
 
         String URL = "https://voteaplication.herokuapp.com/leaveGroup";
         Log.w("GroupView", obj.toString());

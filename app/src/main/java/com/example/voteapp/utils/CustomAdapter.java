@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.voteapp.Group;
 import com.example.voteapp.LoginActivity;
 import com.example.voteapp.R;
 import com.example.voteapp.Survey;
@@ -27,20 +28,19 @@ import java.util.List;
 
 public class CustomAdapter extends BaseAdapter {
     private String userId;
-    private String groupId;
+    private Group group;
     private String groupTitle;
     private final Context context;
     private final List<Survey> surveyList;
     private List<Integer> imageList = new ArrayList<>();
 
-    public CustomAdapter(Context context, List<Survey> surveyList, String userId, String groupId, String groupTitle) {
+    public CustomAdapter(Context context, List<Survey> surveyList, String userId, Group group) {
         // TODO Auto-generated constructor stub
 
         this.context = context;
         this.surveyList = surveyList;
         this.userId = userId;
-        this.groupId = groupId;
-        this.groupTitle = groupTitle;
+        this.group = group;
 
         imageList.add(R.drawable.politicians);
         imageList.add(R.drawable.budget);
@@ -101,9 +101,8 @@ public class CustomAdapter extends BaseAdapter {
                             Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(context, SurveyContainerActivity.class);
-                    intent.putExtra("groupId", groupId);
                     intent.putExtra("userId", userId);
-                    intent.putExtra("groupTitle", groupTitle);
+                    intent.putExtra("group", group);
                     intent.putExtra("surveyTitle", titleTextView.getText().toString().trim());
                     intent.putExtra("surveyId", String.valueOf(surveyList.get(position).getVote_Id()));
                     context.startActivity(intent);

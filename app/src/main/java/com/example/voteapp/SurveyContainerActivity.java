@@ -28,7 +28,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
     private TextView surveyTitle;
     private Button startSurvey;
     private Button backButton;
-    private String groupId;
+    private Group group;
     private String surveyId;
     private String userId;
     private String groupTitle;
@@ -54,8 +54,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
                 args.putSerializable("voteAnswers",(Serializable)voteAnswers);
                 intent.putExtra("BUNDLE", args);
                 intent.putExtra("userId", userId);
-                intent.putExtra("groupId", groupId);
-                intent.putExtra("groupTitle", groupTitle);
+                intent.putExtra("group", group);
                 intent.putExtra("questionNumber", 0);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -74,10 +73,9 @@ public class SurveyContainerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
-        groupId = intent.getStringExtra("groupId");
         userId = intent.getStringExtra("userId");
         surveyId = intent.getStringExtra("surveyId");
-        groupTitle = intent.getStringExtra("groupTitle");
+        group = (Group) intent.getSerializableExtra("group");
         title = intent.getStringExtra("surveyTitle");
         surveyTitle.setText(title);
 
@@ -88,8 +86,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(SurveyContainerActivity.this, GroupView.class);
         intent.putExtra("userId", userId);
-        intent.putExtra("groupId", groupId);
-        intent.putExtra("groupTitle", groupTitle);
+        intent.putExtra("group", group);
         startActivity(intent);
     }
 
