@@ -13,10 +13,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -25,7 +22,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.voteapp.utils.CustomAdapter;
 import com.example.voteapp.utils.CustomAllGroupsAdapter;
 import com.example.voteapp.utils.RequestManager;
 import com.google.gson.Gson;
@@ -35,9 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AllGroupsActivity extends AppCompatActivity {
 
@@ -48,11 +42,11 @@ public class AllGroupsActivity extends AppCompatActivity {
     private Button leaveButton;
     private Button createGroupButton;
     private Button buttonCreate2;
+    private Button backButton;
     private Dialog customDialog;
     private Switch isPublic;
     private EditText createGroupName;
-    private EditText createGroupPassword;
-    private TextView createGroupPasswordLabel;
+    private EditText groupDescriptionEditText;
     private ImageView picture;
 
     @Override
@@ -63,6 +57,7 @@ public class AllGroupsActivity extends AppCompatActivity {
         groupTitle = findViewById(R.id.groupTitle);
         leaveButton = findViewById(R.id.buttonLeaveGroup);
         createGroupButton = findViewById(R.id.createSurveyButton);
+        backButton = findViewById(R.id.backButton);
         groupTitle.setText("Your groups");
         createGroupButton.setText("Create new group");
 
@@ -72,8 +67,7 @@ public class AllGroupsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 customDialog.setContentView(R.layout.custom_dialog_create_group);
                 createGroupName = customDialog.findViewById(R.id.groupNameEditText);
-                createGroupPassword = customDialog.findViewById(R.id.groupPasswordEditText);
-                createGroupPasswordLabel = customDialog.findViewById(R.id.createGroupPasswordLabel);
+                groupDescriptionEditText = customDialog.findViewById(R.id.groupDescriptionEditText);
                 isPublic = customDialog.findViewById(R.id.isPublic);
                 picture = customDialog.findViewById(R.id.createGroupImage);
                 buttonCreate2 = customDialog.findViewById(R.id.buttonCreate2);
@@ -82,23 +76,12 @@ public class AllGroupsActivity extends AppCompatActivity {
                 picture.setTag(R.drawable.tools);
                 final String name = getResources().getResourceName((Integer) picture.getTag());
 
-                isPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            createGroupPassword.setVisibility(View.GONE);
-                            createGroupPasswordLabel.setVisibility(View.GONE);
-                        } else {
-                            createGroupPassword.setVisibility(View.VISIBLE);
-                            createGroupPasswordLabel.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-
                 buttonCreate2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
-                            sendPostCreateGroup(createGroupName.getText().toString(), isPublic.isChecked(), createGroupPassword.getText().toString(), name);
+                            Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), name, Long.valueOf(userId));
+                            sendPostCreateGroup(grp);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -110,6 +93,12 @@ public class AllGroupsActivity extends AppCompatActivity {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -135,14 +124,10 @@ public class AllGroupsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void sendPostCreateGroup(String name, boolean isPublic, String password, String pictureName) throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("name", name);
-        obj.put("description", "");
-        obj.put("groupPasword", password);
-        obj.put("public", isPublic);
-        obj.put("pictureName", pictureName);
-        obj.put("owner_id", Long.valueOf(userId));
+    private void sendPostCreateGroup(Group grp) throws JSONException {
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(grp);
+        JSONObject obj = new JSONObject(jsonString);
 
         String URL = "https://voteaplication.herokuapp.com/createNewGroup";
         Log.w("Dashboard", obj.toString());
