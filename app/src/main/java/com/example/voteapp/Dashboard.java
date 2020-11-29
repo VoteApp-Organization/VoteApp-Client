@@ -13,11 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Switch;
@@ -42,13 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.String.valueOf;
-
 public class Dashboard extends AppCompatActivity {
 
     private List<TextView> textViewList = new ArrayList<>();
     private List<LinearLayout> cardGroupsList = new ArrayList<>();
-    private Map<Integer, String> groupMap = new HashMap<Integer, String>();
     private List<Group> groups = new ArrayList<>();
     private String userId;
     private Button buttonCreate;
@@ -57,21 +52,14 @@ public class Dashboard extends AppCompatActivity {
     private Dialog customDialog;
     private Switch isPublic;
     private EditText createGroupName;
-    private EditText createGroupPassword;
-    private TextView createGroupPasswordLabel;
+    private EditText groupDescriptionEditText;
     private ImageView picture;
     private SearchView searchView;
     private ListView searchingListView;
-    private ListAdapter listAdapter;
     private List<String> searchingList = new ArrayList<String>();
     private TextView yourGroupsTextView;
     private TextView noGroupsTextView;
     private TextView viewAllGroups;
-
-
-    private String mAuth;
-    private FirebaseAuth firebaseAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +93,7 @@ public class Dashboard extends AppCompatActivity {
             public void onClick(View v) {
                 customDialog.setContentView(R.layout.custom_dialog_create_group);
                 createGroupName = customDialog.findViewById(R.id.groupNameEditText);
-                createGroupPassword = customDialog.findViewById(R.id.groupPasswordEditText);
-                createGroupPasswordLabel = customDialog.findViewById(R.id.createGroupPasswordLabel);
+                groupDescriptionEditText = customDialog.findViewById(R.id.groupDescriptionEditText);
                 isPublic = customDialog.findViewById(R.id.isPublic);
                 picture = customDialog.findViewById(R.id.createGroupImage);
                 buttonCreate2 = customDialog.findViewById(R.id.buttonCreate2);
@@ -115,23 +102,12 @@ public class Dashboard extends AppCompatActivity {
                 picture.setTag(R.drawable.tools);
                 final String name = getResources().getResourceName((Integer) picture.getTag());
 
-                isPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            createGroupPassword.setVisibility(View.GONE);
-                            createGroupPasswordLabel.setVisibility(View.GONE);
-                        } else {
-                            createGroupPassword.setVisibility(View.VISIBLE);
-                            createGroupPasswordLabel.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-
                 buttonCreate2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
-                            sendPostCreateGroup(createGroupName.getText().toString(), isPublic.isChecked(), createGroupPassword.getText().toString(), name);
+                            Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), name, Long.valueOf(userId));
+                            sendPostCreateGroup(grp);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -194,17 +170,13 @@ public class Dashboard extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void sendPostCreateGroup(String name, boolean isPublic, String password, String pictureName) throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("name", name);
-        obj.put("description", "");
-        obj.put("groupPasword", password);
-        obj.put("public", isPublic);
-        obj.put("pictureName", pictureName);
-        obj.put("owner_id", Long.valueOf(userId));
+    private void sendPostCreateGroup(Group grp) throws JSONException {
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(grp);
+        JSONObject obj = new JSONObject(jsonString);
 
         String URL = "https://voteaplication.herokuapp.com/createNewGroup";
-        Log.w("Dashboard", obj.toString());
+        Log.e("Dashboard", obj.toString());
 
         RequestManager requestManager = RequestManager.getInstance(this);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, obj,
@@ -229,7 +201,6 @@ public class Dashboard extends AppCompatActivity {
         super.onResume();
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
-        mAuth = intent.getStringExtra("fire");
         Log.e("Dashboard", "user Id= " + userId);
         getUserInfoApiRequest(userId);
     }
