@@ -92,11 +92,11 @@
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <TextView
-                android:id="@+id/createGroupPasswordLabel"
+                android:id="@+id/createGroupDescriptionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:text="Group password"
+                android:text="Group description"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -106,21 +106,20 @@
                 app:layout_constraintVertical_bias="0.163" />
 
             <EditText
-                android:id="@+id/groupPasswordEditText"
+                android:id="@+id/groupDescriptionEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginBottom="20dp"
                 android:ems="10"
-                android:maxLength="20"
-                android:maxLines="1"
+                android:maxLength="200"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/createGroupPasswordLabel"
+                app:layout_constraintTop_toBottomOf="@+id/createGroupDescriptionLabel"
                 app:layout_constraintVertical_bias="0.0" />
 
             <Button
@@ -138,7 +137,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/groupPasswordEditText"
+                app:layout_constraintTop_toBottomOf="@+id/groupDescriptionEditText"
                 app:layout_constraintVertical_bias="1.0" />
 
 

@@ -28,8 +28,8 @@
         android:layout_alignTop="@id/surveyIcon"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="130dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
         android:layout_toEndOf="@id/surveyIcon"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
@@ -47,7 +47,7 @@
         android:layout_alignLeft="@id/surveyTitle"
         android:layout_alignBottom="@id/surveyIcon"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="130dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="10dp"
         android:layout_toEndOf="@+id/surveyIcon"
         android:gravity="center_vertical"
@@ -55,21 +55,18 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="12sp" />
 
-    <Button
-        android:id="@+id/buttonOpenSurvey"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
+    <ImageView
+        android:id="@+id/buttonMenu"
+        android:layout_width="20dp"
+        android:layout_height="2dp"
         android:layout_alignBottom="@id/surveyIcon"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="26dp"
-        android:background="@drawable/custom_button"
-        android:text="Open survey"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="14dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="50dp"
+        android:src="@drawable/menu"
         app:layout_constraintVertical_bias="0.456" />
 
 </RelativeLayout>
