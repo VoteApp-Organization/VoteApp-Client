@@ -3,6 +3,7 @@ package com.example.voteapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,6 +33,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.voteapp.utils.CommonUtils.sendPostJoinGroup;
+
 public class AllGroupsActivity extends AppCompatActivity {
 
     private List<Group> groups = new ArrayList<>();
@@ -47,7 +49,10 @@ public class AllGroupsActivity extends AppCompatActivity {
     private Switch isPublic;
     private EditText createGroupName;
     private EditText groupDescriptionEditText;
+    private EditText passwordEditText;
     private ImageView picture;
+    private Context context;
+    private CustomAllGroupsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class AllGroupsActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         groupTitle.setText("Your groups");
         createGroupButton.setText("Create new group");
+        context = this;
 
         customDialog = new Dialog(this);
         createGroupButton.setOnClickListener(new View.OnClickListener() {
@@ -109,10 +115,35 @@ public class AllGroupsActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         Bundle args = intent.getBundleExtra("BUNDLE");
         groups = (List<Group>) args.getSerializable("groups");
-        leaveButton.setVisibility(View.INVISIBLE);
-
-        CustomAllGroupsAdapter adapter = new CustomAllGroupsAdapter(this, groups, userId);
+        leaveButton.setText("Join");
+        adapter = new CustomAllGroupsAdapter(this, groups, userId);
         list.setAdapter(adapter);
+
+        customDialog = new Dialog(this);
+        leaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.setContentView(R.layout.custom_dialog_enter_group_password);
+                passwordEditText = customDialog.findViewById(R.id.passwordEditText);
+                buttonCreate2 = customDialog.findViewById(R.id.buttonCreate2);
+
+                buttonCreate2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            sendPostJoinGroup(context, userId, "", passwordEditText.getText().toString());
+                            getUserInfoApiRequest(userId);
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        customDialog.dismiss();
+                    }
+                });
+                customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                customDialog.show();
+            }
+        });
     }
 
     @Override

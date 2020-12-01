@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +33,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-import static com.example.voteapp.utils.CommonUtils.leaveGroupWarn;
 import static com.example.voteapp.utils.CommonUtils.sendPostLeaveGroup;
 
 public class CustomAllGroupsAdapter extends BaseAdapter {
@@ -46,7 +43,6 @@ public class CustomAllGroupsAdapter extends BaseAdapter {
     private ImageView buttonMenu;
     private TextView titleTextView;
     private ImageView surveyIcon;
-    private TextView publicPrivate;
     private TextView numberOfQuestions;
 
     public CustomAllGroupsAdapter(Context context, List<Group> groups, String userId) {
@@ -72,7 +68,6 @@ public class CustomAllGroupsAdapter extends BaseAdapter {
         imageList.add(R.drawable.budget);
         imageList.add(R.drawable.politicians);
         imageList.add(R.drawable.budget);
-
     }
 
     @Override
@@ -129,12 +124,21 @@ public class CustomAllGroupsAdapter extends BaseAdapter {
                                 Toast.makeText(context,
                                         "Password has been copied to clipboard", Toast.LENGTH_SHORT).show();
                                 break;
-
                         }
                         return true;
                     }
                 });
                 prepareMenu(groups.get(position), popup);
+            }
+        });
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, GroupView.class);
+                intent.putExtra("group", groups.get(position));
+                intent.putExtra("userId", userId);
+                context.startActivity(intent);
             }
         });
         return convertView;
@@ -167,7 +171,6 @@ public class CustomAllGroupsAdapter extends BaseAdapter {
                         public void onClick(DialogInterface dialog, int which) {
                             try {
                                 sendPostLeaveGroup(context, userId, groups.get(position).getId());
-                                groups.remove(position);
                                 Toast.makeText(context,
                                         "Leaved group \"" + groups.get(position).getName() + "\"", Toast.LENGTH_SHORT).show();
                                 groups.remove(position);
