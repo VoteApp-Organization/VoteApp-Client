@@ -36,9 +36,8 @@ public class SingleQuestionActivity extends AppCompatActivity {
     private EditText answerContent;
     private ListView listViewOfAsnwers;
     private Button nextQuestionBtn;
-    private String groupId;
     private String userId;
-    private String groupTitle;
+    private Group group;
     private int number;
     private List<SingleQuestion> allQuestions = new ArrayList<>();
     private List<VoteAnswer> voteAnswers = new ArrayList<>();
@@ -61,9 +60,8 @@ public class SingleQuestionActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progressbar);
 
         Intent intent = getIntent();
-        groupId = intent.getStringExtra("groupId");
+        group = (Group) intent.getSerializableExtra("group");
         userId = intent.getStringExtra("userId");
-        groupTitle = intent.getStringExtra("groupTitle");
         number = intent.getIntExtra("questionNumber", 0);
         Bundle args = intent.getBundleExtra("BUNDLE");
         allQuestions = (List<SingleQuestion>) args.getSerializable("questionsList");
@@ -82,8 +80,7 @@ public class SingleQuestionActivity extends AppCompatActivity {
                     args.putSerializable("voteAnswers", (Serializable) voteAnswers);
                     intent.putExtra("BUNDLE", args);
                     intent.putExtra("userId", userId);
-                    intent.putExtra("groupId", groupId);
-                    intent.putExtra("groupTitle", groupTitle);
+                    intent.putExtra("group", group);
                     intent.putExtra("questionNumber", number + 1);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -105,7 +102,7 @@ public class SingleQuestionActivity extends AppCompatActivity {
         } else {
             listOfAnswers.add(answerContent.getText().toString());
         }
-        VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), listOfAnswers);
+        VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), Long.valueOf(userId), listOfAnswers);
         voteAnswers.add(voteAnswer);
     }
 
@@ -172,8 +169,7 @@ public class SingleQuestionActivity extends AppCompatActivity {
     private void backToGroupView() {
         Intent intent = new Intent(SingleQuestionActivity.this, GroupView.class);
         intent.putExtra("userId", userId);
-        intent.putExtra("groupId", groupId);
-        intent.putExtra("groupTitle", groupTitle);
+        intent.putExtra("group", group);
         startActivity(intent);
     }
 }

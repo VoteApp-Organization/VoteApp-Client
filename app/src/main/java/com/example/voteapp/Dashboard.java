@@ -238,7 +238,7 @@ public class Dashboard extends AppCompatActivity {
             groups.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Group.class));
             if (i < 4) {
                 textViewList.get(i).setText(groups.get(i).getName());
-                //  imageViewList.get(i).setImageResource(StaticResources.mapOfIcons.get(groups.get(i).getPicture_name()));
+                imageViewList.get(i).setImageResource(StaticResources.mapOfIcons.get(groups.get(i).getPicture_name()));
             }
         }
 
