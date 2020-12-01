@@ -33,19 +33,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.107" />
 
-            <ImageView
-                android:id="@+id/createGroupImage"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:src="@drawable/tools"
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.489"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.082" />
+                app:layout_constraintHorizontal_bias="0.187"
+                app:layout_constraintStart_toEndOf="@+id/isPublic"
+                app:layout_constraintTop_toBottomOf="@+id/groupDescriptionEditText"
+                app:layout_constraintVertical_bias="0.0" />
 
             <EditText
                 android:id="@+id/groupNameEditText"
@@ -69,15 +67,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="5dp"
                 android:text="Public?"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/groupNameEditText"
-                app:layout_constraintVertical_bias="0.049" />
+                app:layout_constraintTop_toBottomOf="@+id/groupDescriptionEditText"
+                app:layout_constraintVertical_bias="0.144" />
 
             <Switch
                 android:id="@+id/isPublic"
@@ -85,10 +82,10 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.078"
+                app:layout_constraintHorizontal_bias="0.076"
                 app:layout_constraintStart_toEndOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/groupNameEditText"
-                app:layout_constraintVertical_bias="0.074"
+                app:layout_constraintTop_toBottomOf="@+id/groupDescriptionEditText"
+                app:layout_constraintVertical_bias="0.147"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <TextView
@@ -102,8 +99,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
-                app:layout_constraintVertical_bias="0.163" />
+                app:layout_constraintTop_toBottomOf="@+id/groupNameEditText"
+                app:layout_constraintVertical_bias="0.053" />
 
             <EditText
                 android:id="@+id/groupDescriptionEditText"
@@ -126,8 +123,8 @@
                 android:id="@+id/buttonCreate2"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/custom_button"
                 android:text="Create"
                 android:textAllCaps="false"
@@ -137,7 +134,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/groupDescriptionEditText"
+                app:layout_constraintTop_toBottomOf="@+id/isPublic"
                 app:layout_constraintVertical_bias="1.0" />
 
 

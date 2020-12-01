@@ -10,10 +10,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.utils.CustomAllGroupsAdapter;
+import com.example.voteapp.utils.CustomSpinner;
 import com.example.voteapp.utils.RequestManager;
 import com.google.gson.Gson;
 
@@ -50,8 +53,9 @@ public class AllGroupsActivity extends AppCompatActivity {
     private EditText createGroupName;
     private EditText groupDescriptionEditText;
     private EditText passwordEditText;
-    private ImageView picture;
     private Context context;
+    private Spinner spinnerIcons;
+    private String selectedIcon;
     private CustomAllGroupsAdapter adapter;
 
     @Override
@@ -75,18 +79,28 @@ public class AllGroupsActivity extends AppCompatActivity {
                 createGroupName = customDialog.findViewById(R.id.groupNameEditText);
                 groupDescriptionEditText = customDialog.findViewById(R.id.groupDescriptionEditText);
                 isPublic = customDialog.findViewById(R.id.isPublic);
-                picture = customDialog.findViewById(R.id.createGroupImage);
                 buttonCreate2 = customDialog.findViewById(R.id.buttonCreate2);
+                spinnerIcons = customDialog.findViewById(R.id.spinner);
 
-                picture.setImageResource(R.drawable.tools);
-                picture.setTag(R.drawable.tools);
-                final String name = getResources().getResourceName((Integer) picture.getTag());
+                final CustomSpinner customAdapter = new CustomSpinner(getApplicationContext());
+                spinnerIcons.setAdapter(customAdapter);
+                spinnerIcons.setSelection(0);
+                spinnerIcons.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        selectedIcon = String.valueOf(parent.getAdapter().getItem(position));
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+
 
                 buttonCreate2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
-                            Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), name, Long.valueOf(userId));
+                            Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), selectedIcon, Long.valueOf(userId));
                             sendPostCreateGroup(grp);
                         } catch (JSONException e) {
                             e.printStackTrace();
