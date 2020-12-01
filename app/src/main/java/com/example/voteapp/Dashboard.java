@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -26,7 +29,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.voteapp.utils.CustomSpinner;
 import com.example.voteapp.utils.RequestManager;
+import com.example.voteapp.utils.StaticResources;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
@@ -40,9 +45,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.voteapp.utils.CommonUtils.sendPostJoinGroup;
+
 public class Dashboard extends AppCompatActivity {
 
     private List<TextView> textViewList = new ArrayList<>();
+    private List<ImageView> imageViewList = new ArrayList<>();
     private List<LinearLayout> cardGroupsList = new ArrayList<>();
     private List<Group> groups = new ArrayList<>();
     private String userId;
@@ -53,13 +61,16 @@ public class Dashboard extends AppCompatActivity {
     private Switch isPublic;
     private EditText createGroupName;
     private EditText groupDescriptionEditText;
-    private ImageView picture;
     private SearchView searchView;
     private ListView searchingListView;
-    private List<String> searchingList = new ArrayList<String>();
+    private List<String> searchingListOfNames = new ArrayList<>();
+    private List<String> searchingListOfIds = new ArrayList<>();
     private TextView yourGroupsTextView;
     private TextView noGroupsTextView;
     private TextView viewAllGroups;
+    private Context context;
+    private Spinner spinnerIcons;
+    private String selectedIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +83,7 @@ public class Dashboard extends AppCompatActivity {
         yourGroupsTextView = findViewById(R.id.yourGroupsTextView);
         noGroupsTextView = findViewById(R.id.noGroupsTextView);
         viewAllGroups = findViewById(R.id.viewAllGroups);
+        context = this;
 
         checkVisibility();
 
@@ -80,7 +92,7 @@ public class Dashboard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, AllGroupsActivity.class);
                 Bundle args = new Bundle();
-                args.putSerializable("groups",(Serializable)groups);
+                args.putSerializable("groups", (Serializable) groups);
                 intent.putExtra("BUNDLE", args);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
@@ -95,18 +107,27 @@ public class Dashboard extends AppCompatActivity {
                 createGroupName = customDialog.findViewById(R.id.groupNameEditText);
                 groupDescriptionEditText = customDialog.findViewById(R.id.groupDescriptionEditText);
                 isPublic = customDialog.findViewById(R.id.isPublic);
-                picture = customDialog.findViewById(R.id.createGroupImage);
                 buttonCreate2 = customDialog.findViewById(R.id.buttonCreate2);
+                spinnerIcons = customDialog.findViewById(R.id.spinner);
 
-                picture.setImageResource(R.drawable.tools);
-                picture.setTag(R.drawable.tools);
-                final String name = getResources().getResourceName((Integer) picture.getTag());
+                final CustomSpinner customAdapter = new CustomSpinner(getApplicationContext());
+                spinnerIcons.setAdapter(customAdapter);
+                spinnerIcons.setSelection(0);
+                spinnerIcons.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        selectedIcon = String.valueOf(parent.getAdapter().getItem(position));
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
 
                 buttonCreate2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
-                            Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), name, Long.valueOf(userId));
+                            Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), selectedIcon, Long.valueOf(userId));
                             sendPostCreateGroup(grp);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -215,8 +236,9 @@ public class Dashboard extends AppCompatActivity {
         Gson gson = new Gson();
         for (int i = 0; i < jsonArray.length(); i++) {
             groups.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Group.class));
-            if(i<4){
+            if (i < 4) {
                 textViewList.get(i).setText(groups.get(i).getName());
+                //  imageViewList.get(i).setImageResource(StaticResources.mapOfIcons.get(groups.get(i).getPicture_name()));
             }
         }
 
@@ -255,6 +277,11 @@ public class Dashboard extends AppCompatActivity {
         textViewList.add((TextView) findViewById(R.id.group2));
         textViewList.add((TextView) findViewById(R.id.group3));
         textViewList.add((TextView) findViewById(R.id.group4));
+
+        imageViewList.add((ImageView) findViewById(R.id.group1image));
+        imageViewList.add((ImageView) findViewById(R.id.group2image));
+        imageViewList.add((ImageView) findViewById(R.id.group3image));
+        imageViewList.add((ImageView) findViewById(R.id.group4image));
 
         groupCard1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -327,16 +354,20 @@ public class Dashboard extends AppCompatActivity {
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                searchingList.clear();
+                searchingListOfNames.clear();
+                searchingListOfIds.clear();
                 Log.e("Response", response.toString());
                 for (int i = 0; i < response.length() && i < 4; i++) {
                     String name = null;
+                    long id = 0;
                     try {
                         name = response.getJSONObject(i).getString("name");
+                        id = response.getJSONObject(i).getLong("id");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    searchingList.add(name);
+                    searchingListOfNames.add(name);
+                    searchingListOfIds.add(String.valueOf(id));
                 }
                 refreshList();
             }
@@ -352,8 +383,40 @@ public class Dashboard extends AppCompatActivity {
 
     private void refreshList() {
         searchingListView.setVisibility(View.VISIBLE);
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(Dashboard.this, android.R.layout.simple_list_item_1, searchingList);
+        final ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(Dashboard.this, android.R.layout.simple_list_item_1, searchingListOfNames);
         searchingListView.setAdapter(itemsAdapter);
+
+        searchingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                for (Group grp : groups) {
+                    if (grp.getId().equals(searchingListOfIds.get(position))) {
+                        Intent intent = new Intent(Dashboard.this, GroupView.class);
+                        intent.putExtra("group", grp);
+                        intent.putExtra("userId", userId);
+                        startActivity(intent);
+                        return;
+                    }
+                }
+                new AlertDialog.Builder(Dashboard.this)
+                        .setTitle("Join to group")
+                        .setMessage("Are you sure you want to join to this group?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    sendPostJoinGroup(context, userId, searchingListOfIds.get(position), "");
+                                    searchView.setQuery("", false);
+                                    searchView.setIconified(true);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
     }
 }

@@ -39,4 +39,31 @@ public class CommonUtils {
                 });
         requestManager.addToRequestQueue(jsObjRequest);
     }
+
+    public static void sendPostJoinGroup(Context context, String userId, String groupId, String password) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("user_Id", userId);
+        obj.put("group_Id", groupId);
+        obj.put("password", password);
+
+        String URL = "https://voteaplication.herokuapp.com/joinGroup";
+        Log.w("GroupView", obj.toString());
+
+        RequestManager requestManager = RequestManager.getInstance(context);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, obj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("Response", response.toString());
+                        // onBackPressed();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.w("GroupView", "leaveGroup:failure", error.getCause());
+                    }
+                });
+        requestManager.addToRequestQueue(jsObjRequest);
+    }
 }
