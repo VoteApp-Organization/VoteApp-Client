@@ -18,21 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.voteapp.Group;
-import com.example.voteapp.LoginActivity;
 import com.example.voteapp.R;
 import com.example.voteapp.Survey;
 import com.example.voteapp.SurveyContainerActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomAdapter extends BaseAdapter {
     private String userId;
     private Group group;
-    private String groupTitle;
     private final Context context;
     private final List<Survey> surveyList;
-    private List<Integer> imageList = new ArrayList<>();
 
     public CustomAdapter(Context context, List<Survey> surveyList, String userId, Group group) {
         // TODO Auto-generated constructor stub
@@ -41,24 +37,6 @@ public class CustomAdapter extends BaseAdapter {
         this.surveyList = surveyList;
         this.userId = userId;
         this.group = group;
-
-        imageList.add(R.drawable.politicians);
-        imageList.add(R.drawable.budget);
-        imageList.add(R.drawable.politicians);
-        imageList.add(R.drawable.budget);
-        imageList.add(R.drawable.politicians);
-        imageList.add(R.drawable.budget);
-        imageList.add(R.drawable.politicians);
-        imageList.add(R.drawable.budget);
-        imageList.add(R.drawable.politicians);
-        imageList.add(R.drawable.budget);
-        imageList.add(R.drawable.politicians);
-        imageList.add(R.drawable.budget);
-        imageList.add(R.drawable.politicians);
-        imageList.add(R.drawable.budget);
-        imageList.add(R.drawable.politicians);
-        imageList.add(R.drawable.budget);
-
     }
 
     @Override
@@ -68,8 +46,6 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-
-
         return null;
     }
 
@@ -116,7 +92,7 @@ public class CustomAdapter extends BaseAdapter {
             Survey str = surveyList.get(position);
             titleTextView.setText(str.getVoteTitle());
             numberOfQuestions.setText("(" + str.getNumberOfQuestions() + " questions)");
-            //  surveyIcon.setImageResource(imageList.get(position));
+            surveyIcon.setImageResource(StaticResources.mapOfIcons.get(str.getSurveyPicture()));
             if (surveyList.get(position).getAnswerHasBeenGiven()) {
                 layout.getBackground().setColorFilter(greyFilter);
                 buttonOpenSurvey.setBackgroundResource(R.drawable.custom_button_disabled);

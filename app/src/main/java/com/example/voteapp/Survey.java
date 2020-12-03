@@ -1,21 +1,24 @@
 package com.example.voteapp;
 
+import java.util.Date;
+
 public class Survey {
 
     private Long vote_Id;
     private String voteTitle;
-    private String createdDate;
+    private Date createdDate;
     private Long author_id;
-    private String startDate;
-    private String endDate;
+    private Date startDate;
+    private Date endDate;
     private Boolean isPublicVote;
     private Boolean isAnonymousVote;
     private Boolean isMandatory;
     public Boolean answerHasBeenGiven;
     public String voteDate;
     public Integer numberOfQuestions;
+    public String surveyPicture;
 
-    public Survey(Long vote_Id, String voteTitle, String createdDate, Long author_id, String startDate, String endDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Boolean answerHasBeenGiven, String voteDate, Integer numberOfQuestions) {
+    public Survey(Long vote_Id, String voteTitle, Date createdDate, Long author_id, Date startDate, Date endDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Boolean answerHasBeenGiven, String voteDate, Integer numberOfQuestions, String surveyPicture) {
         this.vote_Id = vote_Id;
         this.voteTitle = voteTitle;
         this.createdDate = createdDate;
@@ -28,6 +31,7 @@ public class Survey {
         this.answerHasBeenGiven = answerHasBeenGiven;
         this.voteDate = voteDate;
         this.numberOfQuestions = numberOfQuestions;
+        this.surveyPicture = surveyPicture;
     }
 
     public Long getVote_Id() {
@@ -46,11 +50,11 @@ public class Survey {
         this.voteTitle = voteTitle;
     }
 
-    public String getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -62,19 +66,19 @@ public class Survey {
         this.author_id = author_id;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -124,5 +128,13 @@ public class Survey {
 
     public void setNumberOfQuestions(Integer numberOfQuestions) {
         this.numberOfQuestions = numberOfQuestions;
+    }
+
+    public String getSurveyPicture() {
+        return surveyPicture;
+    }
+
+    public void setSurveyPicture(String surveyPicture) {
+        this.surveyPicture = surveyPicture;
     }
 }
