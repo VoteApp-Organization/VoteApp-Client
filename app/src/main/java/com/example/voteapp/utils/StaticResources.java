@@ -1,7 +1,10 @@
 package com.example.voteapp.utils;
 
 import com.example.voteapp.R;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StaticResources {
@@ -19,4 +22,9 @@ public class StaticResources {
 
     public static String[] questionTypes = { "Text", "Picklist",
             "Checkbox"};
+
+    public static List<String> checkboxValues = new ArrayList<String>() {{
+        add("True");
+        add("False");
+    }};
 }

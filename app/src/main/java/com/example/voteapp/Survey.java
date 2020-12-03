@@ -1,14 +1,15 @@
 package com.example.voteapp;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Survey {
+public class Survey implements Serializable {
 
     private Long vote_Id;
     private String voteTitle;
     private Date createdDate;
     private Long author_id;
-    private Date startDate;
+    private String startDate;
     private Date endDate;
     private Boolean isPublicVote;
     private Boolean isAnonymousVote;
@@ -18,21 +19,17 @@ public class Survey {
     public Integer numberOfQuestions;
     public String surveyPicture;
 
-    public Survey(Long vote_Id, String voteTitle, Date createdDate, Long author_id, Date startDate, Date endDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Boolean answerHasBeenGiven, String voteDate, Integer numberOfQuestions, String surveyPicture) {
-        this.vote_Id = vote_Id;
+    public Survey(String voteTitle, Long author_id, String startDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Integer numberOfQuestions, String surveyPicture) {
         this.voteTitle = voteTitle;
-        this.createdDate = createdDate;
         this.author_id = author_id;
         this.startDate = startDate;
-        this.endDate = endDate;
         this.isPublicVote = isPublicVote;
         this.isAnonymousVote = isAnonymousVote;
         this.isMandatory = isMandatory;
-        this.answerHasBeenGiven = answerHasBeenGiven;
-        this.voteDate = voteDate;
         this.numberOfQuestions = numberOfQuestions;
         this.surveyPicture = surveyPicture;
     }
+
 
     public Long getVote_Id() {
         return vote_Id;
@@ -66,11 +63,11 @@ public class Survey {
         this.author_id = author_id;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 

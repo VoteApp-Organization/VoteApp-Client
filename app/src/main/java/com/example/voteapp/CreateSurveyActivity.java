@@ -1,11 +1,13 @@
 package com.example.voteapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -28,11 +30,20 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.utils.CommonUtils;
 import com.example.voteapp.utils.RequestManager;
 import com.example.voteapp.utils.StaticResources;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +55,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
     private Group group;
     private String userId;
     private String surveyName;
+    private String surveyPicture;
     private List<SingleQuestion> allQuestions = new ArrayList<>();
     private EditText addQuestionEditText;
     private LayoutInflater inflater;
@@ -62,6 +74,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
     private Spinner spinner;
     private View.OnClickListener addAnswerListener;
     private View.OnClickListener showHideExpandedListListener;
+    private Survey survey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +93,16 @@ public class CreateSurveyActivity extends AppCompatActivity {
         previewSurveyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CreateSurveyActivity.this, "Survey will be previewed here",
-                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CreateSurveyActivity.this, PreviewSurveyContainerActivity.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("group", group);
+                Bundle args = new Bundle();
+                Date cDate = new Date();
+                String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+                args.putSerializable("survey", (Serializable) new Survey(surveyName, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
+                args.putSerializable("questionsList", (Serializable) allQuestions);
+                intent.putExtra("BUNDLE", args);
+                startActivity(intent);
             }
         });
 
@@ -93,10 +114,18 @@ public class CreateSurveyActivity extends AppCompatActivity {
         });
 
         shareSurveyButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                Date cDate = new Date();
+                String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
                 Toast.makeText(CreateSurveyActivity.this, "Survey will be shared here",
                         Toast.LENGTH_SHORT).show();
+                try {
+                    sendSurvey(new Survey(surveyName, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         refreshList();
@@ -263,7 +292,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
                             scroll.fullScroll(View.FOCUS_DOWN);
                             Log.e("asd", spinner.getSelectedItem().toString());
-                            allQuestions.add(new SingleQuestion(addQuestionEditText.getText().toString(), spinner.getSelectedItem().toString(), new ArrayList<String>()));
+                            allQuestions.add(new SingleQuestion(addQuestionEditText.getText().toString(), false, false, 50, spinner.getSelectedItem().toString(), new ArrayList<String>()));
                             refreshList();
                             subLayoutsList.get(subLayoutsList.size() - 1).setVisibility(View.VISIBLE);
                             typeOfQuestionTextViews.get(typeOfQuestionTextViews.size() - 1).setVisibility(View.VISIBLE);
@@ -280,9 +309,21 @@ public class CreateSurveyActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("BUNDLE");
         userId = intent.getStringExtra("userId");
         group = (Group) intent.getSerializableExtra("group");
-        surveyName = intent.getStringExtra("surveyName");
+        if(args != null) {
+            allQuestions = (List<SingleQuestion>) args.getSerializable("questionsList");
+            survey = (Survey) args.getSerializable("survey");
+            group = (Group) intent.getSerializableExtra("group");
+            userId = intent.getStringExtra("userId");
+            surveyName = survey.getVoteTitle();
+            surveyPicture = survey.getSurveyPicture();
+            refreshList();
+        }else{
+            surveyName = intent.getStringExtra("surveyName");
+            surveyPicture = intent.getStringExtra("surveyPicture");
+        }
     }
 
     @Override
@@ -294,11 +335,19 @@ public class CreateSurveyActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void sendSurvey(final String idToken) throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("voteTitle", surveyName);
-        obj.put("description", "");
-        obj.put("author_id", Long.valueOf(userId));
+    private void sendSurvey(Survey survey) throws JSONException {
+        Gson gsonPackage = new Gson();
+        String jsonString = gsonPackage.toJson(survey);
+        JSONObject obj = new JSONObject(jsonString);
+
+        Gson gsonQuestions = new Gson();
+        String element = gsonQuestions.toJson(
+                allQuestions,
+                new TypeToken<ArrayList<SingleQuestion>>() {
+                }.getType());
+        JSONArray list = new JSONArray(element);
+        obj.put("questions", list);
+        Log.e("CreateSurveyActivity", "" + obj);
 
         String URL = "https://voteaplication.herokuapp.com/createNewSurvey";
 
@@ -316,15 +365,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.w("CreateSurveyActivity", "createSurvey:failure", error.getCause());
                     }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("ID-TOKEN", idToken);
-                params.put("group_Id", group.getId());
-                return params;
-            }
-        };
+                });
         requestManager.addToRequestQueue(jsObjRequest);
     }
 }
