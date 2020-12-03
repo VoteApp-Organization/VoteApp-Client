@@ -129,7 +129,7 @@ public class GroupView extends AppCompatActivity {
                 intent.putExtra("userId", userId);
                 intent.putExtra("surveyName", surveyNameEditText.getText().toString());
                 intent.putExtra("surveyDesc", surveyDescriptionEditText.getText().toString());
-                intent.putExtra("pictureName", selectedIcon);
+                intent.putExtra("surveyPicture", selectedIcon);
                 startActivity(intent);
                 customDialog.dismiss();
             }

@@ -25,6 +25,15 @@ public class SingleQuestion implements Serializable {
         this.picklistValues = picklistValues;
     }
 
+    public SingleQuestion(String questionContent, Boolean multipleChoice, Boolean mandatoryQuestion, Integer maximumCapacityOfAnswer, String questionType, List<String> picklistValues) {
+        this.questionContent = questionContent;
+        this.multipleChoice = multipleChoice;
+        this.mandatoryQuestion = mandatoryQuestion;
+        this.maximumCapacityOfAnswer = maximumCapacityOfAnswer;
+        this.questionType = questionType;
+        this.picklistValues = picklistValues;
+    }
+
     public SingleQuestion(String questionContent, String questionType, List<String> picklistValues) {
         this.questionContent = questionContent;
         this.questionType = questionType;
