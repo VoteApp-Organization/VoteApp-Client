@@ -4,9 +4,9 @@
     android:id="@+id/groupItemLayoutExpanded"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
     android:background="@drawable/custom_small_container"
     android:orientation="vertical">
+
 
     <RelativeLayout
         android:id="@+id/groupItemLayoutInter"
@@ -29,7 +29,24 @@
             android:textSize="35sp" />
 
         <TextView
-            android:id="@+id/surveyTitle"
+            android:id="@+id/questionTitleTextView"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_toEndOf="@+id/numberOfQuestion"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:visibility="visible"
+            android:text="Title"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/questionTitleEditText"
             android:layout_width="50dp"
             android:layout_height="60dp"
             android:layout_alignParentEnd="true"
@@ -37,20 +54,36 @@
             android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/numberOfQuestion"
             android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:text="Title"
+            android:hint="Type a question here"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:visibility="gone"
             android:textSize="18sp" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/test"
-        android:visibility="gone"
-        android:layout_width="match_parent"
+
+
+    <TextView
+        android:id="@+id/typeOfQuestionTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/groupItemLayoutInter"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:gravity="center"
+        android:layout_marginEnd="0dp"
+        android:visibility="gone"
+        android:text="Type"/>
+
+    <LinearLayout
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/typeOfQuestionTextView"
         android:layout_marginHorizontal="5dp"
         android:layout_marginBottom="5dp"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <TableRow
@@ -61,19 +94,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
-
-        <!--    <ListView
-                android:id="@+id/listViewExpandedAnswers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="20dp"
-                android:divider="@android:color/transparent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.0" />-->
     </LinearLayout>
+
+
 </RelativeLayout>
