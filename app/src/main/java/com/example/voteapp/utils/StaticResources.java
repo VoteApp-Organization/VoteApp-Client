@@ -16,4 +16,7 @@ public class StaticResources {
         put("party", R.drawable.party);
         put("dorm", R.drawable.dorm);
     }};
+
+    public static String[] questionTypes = { "Text", "Picklist",
+            "Checkbox"};
 }
