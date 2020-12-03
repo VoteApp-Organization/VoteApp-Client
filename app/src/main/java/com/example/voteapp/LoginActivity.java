@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -115,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.w("LoginActivity", "signInWithEmail:SUCCESS" + response.toString());
-                        Intent intent = new Intent(LoginActivity.this, Dashboard.class);
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                         try {
                             intent.putExtra("userId", response.getString("id"));
                         } catch (JSONException e) {

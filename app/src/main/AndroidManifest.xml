@@ -17,8 +17,8 @@
         <activity android:name=".SingleQuestionActivity" />
         <activity android:name=".PreviewSurveyContainerActivity" />
         <activity android:name=".PreviewSingleQuestionActivity" />
-        <activity android:name=".GroupView" />
-        <activity android:name=".Dashboard" />
+        <activity android:name=".GroupViewActivity" />
+        <activity android:name=".DashboardActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

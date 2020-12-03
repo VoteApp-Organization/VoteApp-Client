@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.voteapp.model.Group;
+import com.example.voteapp.model.Survey;
 import com.example.voteapp.utils.CustomAdapter;
 import com.example.voteapp.utils.CustomSpinner;
 import com.example.voteapp.utils.RequestManager;
@@ -35,7 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupView extends AppCompatActivity {
+public class GroupViewActivity extends AppCompatActivity {
     final List<Survey> allSurveys = new ArrayList<>();
     private TextView groupTitle;
     private Button backButton;
@@ -82,7 +84,7 @@ public class GroupView extends AppCompatActivity {
         leaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(GroupView.this)
+                new AlertDialog.Builder(GroupViewActivity.this)
                         .setTitle("Leave group")
                         .setMessage("Are you sure you want to leave from this group?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -124,7 +126,7 @@ public class GroupView extends AppCompatActivity {
         buttonCreate3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GroupView.this, CreateSurveyActivity.class);
+                Intent intent = new Intent(GroupViewActivity.this, CreateSurveyActivity.class);
                 intent.putExtra("group", group);
                 intent.putExtra("userId", userId);
                 intent.putExtra("surveyName", surveyNameEditText.getText().toString());
@@ -204,7 +206,7 @@ public class GroupView extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(GroupView.this, Dashboard.class);
+        Intent intent = new Intent(GroupViewActivity.this, DashboardActivity.class);
         intent.putExtra("userId", userId);
         startActivity(intent);
     }

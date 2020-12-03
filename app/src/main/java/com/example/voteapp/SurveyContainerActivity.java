@@ -13,6 +13,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.voteapp.model.Group;
+import com.example.voteapp.model.SingleQuestion;
+import com.example.voteapp.model.VoteAnswer;
 import com.example.voteapp.utils.RequestManager;
 import com.google.gson.Gson;
 
@@ -84,7 +87,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SurveyContainerActivity.this, GroupView.class);
+        Intent intent = new Intent(SurveyContainerActivity.this, GroupViewActivity.class);
         intent.putExtra("userId", userId);
         intent.putExtra("group", group);
         startActivity(intent);

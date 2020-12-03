@@ -24,8 +24,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
-import com.example.voteapp.Group;
-import com.example.voteapp.GroupView;
+import com.example.voteapp.model.Group;
+import com.example.voteapp.GroupViewActivity;
 import com.example.voteapp.R;
 
 import org.json.JSONException;
@@ -136,7 +136,7 @@ public class CustomAllGroupsAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, GroupView.class);
+                Intent intent = new Intent(context, GroupViewActivity.class);
                 intent.putExtra("group", groups.get(position));
                 intent.putExtra("userId", userId);
                 context.startActivity(intent);

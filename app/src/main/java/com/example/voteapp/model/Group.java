@@ -1,4 +1,4 @@
-package com.example.voteapp;
+package com.example.voteapp.model;
 
 import java.io.Serializable;
 

@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -24,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.voteapp.model.Group;
 import com.example.voteapp.utils.CustomAllGroupsAdapter;
 import com.example.voteapp.utils.CustomSpinner;
 import com.example.voteapp.utils.RequestManager;
@@ -162,7 +162,7 @@ public class AllGroupsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(AllGroupsActivity.this, Dashboard.class);
+        Intent intent = new Intent(AllGroupsActivity.this, DashboardActivity.class);
         //  setIntent.addCategory(Intent.CATEGORY_HOME);
         //   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("userId", userId);
