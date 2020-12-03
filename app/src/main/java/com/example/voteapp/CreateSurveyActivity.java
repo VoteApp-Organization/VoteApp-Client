@@ -99,6 +99,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+        refreshList();
     }
 
     private void refreshSubList(LinearLayout linearLayoutSub, int i) {
