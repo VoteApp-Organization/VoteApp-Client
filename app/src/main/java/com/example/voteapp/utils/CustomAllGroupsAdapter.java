@@ -42,7 +42,7 @@ public class CustomAllGroupsAdapter extends BaseAdapter {
     private List<Integer> imageList = new ArrayList<>();
     private ImageView buttonMenu;
     private TextView titleTextView;
-    private ImageView surveyIcon;
+    private ImageView groupIcon;
     private TextView numberOfQuestions;
 
     public CustomAllGroupsAdapter(Context context, List<Group> groups, String userId) {
@@ -93,11 +93,12 @@ public class CustomAllGroupsAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.custom_allgroups_item, null);
         titleTextView = convertView.findViewById(R.id.surveyTitle);
         numberOfQuestions = convertView.findViewById(R.id.surveyNumberOfQuestions);
-        surveyIcon = convertView.findViewById(R.id.surveyIcon);
+        groupIcon = convertView.findViewById(R.id.surveyIcon);
         buttonMenu = convertView.findViewById(R.id.buttonMenu);
 
         Group grp = groups.get(position);
         titleTextView.setText(grp.getName());
+        groupIcon.setImageResource(StaticResources.mapOfIcons.get(grp.getPicture_name()));
         numberOfQuestions.setText(grp.getDescription());
         buttonMenu.setOnClickListener(new View.OnClickListener() {
             @Override

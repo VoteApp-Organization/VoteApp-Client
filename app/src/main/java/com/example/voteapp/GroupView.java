@@ -11,10 +11,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.utils.CustomAdapter;
+import com.example.voteapp.utils.CustomSpinner;
 import com.example.voteapp.utils.RequestManager;
 import com.google.gson.Gson;
 
@@ -41,14 +43,13 @@ public class GroupView extends AppCompatActivity {
     private Button createSurveyButton;
     private ListView list;
     private String userId;
-    private String groupId;
-    private String title;
     private Dialog customDialog;
     private EditText surveyNameEditText;
     private EditText surveyDescriptionEditText;
     private TextView noSurveysTextView;
     private Button buttonCreate3;
-    private ImageView picture;
+    private Spinner spinnerIcons;
+    private String selectedIcon;
     private Group group;
 
     @Override
@@ -84,9 +85,6 @@ public class GroupView extends AppCompatActivity {
                 new AlertDialog.Builder(GroupView.this)
                         .setTitle("Leave group")
                         .setMessage("Are you sure you want to leave from this group?")
-
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
@@ -96,12 +94,9 @@ public class GroupView extends AppCompatActivity {
                                 }
                             }
                         })
-
-                        // A null listener allows the button to dismiss the dialog and take no further action.
                         .setNegativeButton(android.R.string.no, null)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-
             }
         });
     }
@@ -110,12 +105,21 @@ public class GroupView extends AppCompatActivity {
         customDialog.setContentView(R.layout.custom_dialog_create_survey);
         surveyNameEditText = customDialog.findViewById(R.id.surveyNameEditText);
         surveyDescriptionEditText = customDialog.findViewById(R.id.surveyDescriptionEditText);
-        picture = customDialog.findViewById(R.id.createSurveyImage);
+        spinnerIcons = customDialog.findViewById(R.id.spinnerIcons);
         buttonCreate3 = customDialog.findViewById(R.id.buttonCreate3);
 
-        picture.setImageResource(R.drawable.tools);
-        picture.setTag(R.drawable.tools);
-        final String name = getResources().getResourceName((Integer) picture.getTag());
+        final CustomSpinner customAdapter = new CustomSpinner(getApplicationContext());
+        spinnerIcons.setAdapter(customAdapter);
+        spinnerIcons.setSelection(0);
+        spinnerIcons.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedIcon = String.valueOf(parent.getAdapter().getItem(position));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         buttonCreate3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +129,7 @@ public class GroupView extends AppCompatActivity {
                 intent.putExtra("userId", userId);
                 intent.putExtra("surveyName", surveyNameEditText.getText().toString());
                 intent.putExtra("surveyDesc", surveyDescriptionEditText.getText().toString());
-                intent.putExtra("picture", name);
+                intent.putExtra("pictureName", selectedIcon);
                 startActivity(intent);
                 customDialog.dismiss();
             }

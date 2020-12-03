@@ -14,5 +14,6 @@ public class StaticResources {
         put("school", R.drawable.school);
         put("flag", R.drawable.flag);
         put("party", R.drawable.party);
+        put("dorm", R.drawable.dorm);
     }};
 }

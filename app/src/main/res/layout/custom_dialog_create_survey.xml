@@ -24,7 +24,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:text="Survey name"
+                android:paddingStart="3dp"
+                android:text="Survey name:"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -33,19 +34,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.107" />
 
-            <ImageView
-                android:id="@+id/createSurveyImage"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:src="@drawable/tools"
+            <Spinner
+                android:id="@+id/spinnerIcons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.518"
-                app:layout_constraintStart_toEndOf="@+id/textView15"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.078" />
+                app:layout_constraintHorizontal_bias="0.181"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/surveyDescriptionEditText"
+                app:layout_constraintVertical_bias="0.0" />
 
             <EditText
                 android:id="@+id/surveyNameEditText"
@@ -70,7 +68,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:text="Survey description"
+                android:paddingStart="3dp"
+                android:text="Survey description:"
                 android:textSize="18sp"
                 android:layout_marginTop="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -106,12 +105,11 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="15sp"
-                android:layout_marginTop="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/surveyDescriptionEditText"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerIcons"
                 app:layout_constraintVertical_bias="0" />
 
 
