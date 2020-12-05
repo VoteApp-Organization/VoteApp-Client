@@ -67,6 +67,7 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView yourGroupsTextView;
     private TextView noGroupsTextView;
     private TextView viewAllGroups;
+    private TextView viewAllExploreGroups;
     private Context context;
     private Spinner spinnerIcons;
     private String selectedIcon;
@@ -82,6 +83,7 @@ public class DashboardActivity extends AppCompatActivity {
         yourGroupsTextView = findViewById(R.id.yourGroupsTextView);
         noGroupsTextView = findViewById(R.id.noGroupsTextView);
         viewAllGroups = findViewById(R.id.viewAllGroups);
+        viewAllExploreGroups = findViewById(R.id.viewAllExploreGroups);
         context = this;
 
         checkVisibility();
@@ -90,6 +92,18 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, AllGroupsActivity.class);
+                Bundle args = new Bundle();
+                args.putSerializable("groups", (Serializable) groups);
+                intent.putExtra("BUNDLE", args);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        });
+
+        viewAllExploreGroups.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, ExploreActivity.class);
                 Bundle args = new Bundle();
                 args.putSerializable("groups", (Serializable) groups);
                 intent.putExtra("BUNDLE", args);

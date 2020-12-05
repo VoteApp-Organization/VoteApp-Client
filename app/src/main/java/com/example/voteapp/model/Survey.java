@@ -7,6 +7,7 @@ public class Survey implements Serializable {
 
     private Long vote_Id;
     private String voteTitle;
+    public String surveyDescription;
     private Date createdDate;
     private Long author_id;
     private String startDate;
@@ -19,8 +20,9 @@ public class Survey implements Serializable {
     public Integer numberOfQuestions;
     public String surveyPicture;
 
-    public Survey(String voteTitle, Long author_id, String startDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Integer numberOfQuestions, String surveyPicture) {
+    public Survey(String voteTitle, String surveyDescription, Long author_id, String startDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Integer numberOfQuestions, String surveyPicture) {
         this.voteTitle = voteTitle;
+        this.surveyDescription = surveyDescription;
         this.author_id = author_id;
         this.startDate = startDate;
         this.isPublicVote = isPublicVote;
@@ -30,6 +32,13 @@ public class Survey implements Serializable {
         this.surveyPicture = surveyPicture;
     }
 
+    public String getSurveyDescription() {
+        return surveyDescription;
+    }
+
+    public void setSurveyDescription(String surveyDescription) {
+        this.surveyDescription = surveyDescription;
+    }
 
     public Long getVote_Id() {
         return vote_Id;
