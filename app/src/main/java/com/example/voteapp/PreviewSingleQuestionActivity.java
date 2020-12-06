@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.voteapp.model.Group;
+import com.example.voteapp.model.SingleQuestion;
+import com.example.voteapp.model.Survey;
 import com.example.voteapp.utils.CustomAnswerAdapter;
 import com.example.voteapp.utils.StaticResources;
 

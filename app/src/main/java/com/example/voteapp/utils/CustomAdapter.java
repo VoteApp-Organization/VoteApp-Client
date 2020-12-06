@@ -17,9 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.voteapp.Group;
+import com.example.voteapp.model.Group;
 import com.example.voteapp.R;
-import com.example.voteapp.Survey;
+import com.example.voteapp.model.Survey;
 import com.example.voteapp.SurveyContainerActivity;
 
 import java.util.List;

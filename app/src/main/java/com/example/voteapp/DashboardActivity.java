@@ -29,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.voteapp.model.Group;
 import com.example.voteapp.utils.CustomSpinner;
 import com.example.voteapp.utils.RequestManager;
 import com.example.voteapp.utils.StaticResources;
@@ -41,13 +42,11 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.example.voteapp.utils.CommonUtils.sendPostJoinGroup;
 
-public class Dashboard extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
 
     private List<TextView> textViewList = new ArrayList<>();
     private List<ImageView> imageViewList = new ArrayList<>();
@@ -68,6 +67,7 @@ public class Dashboard extends AppCompatActivity {
     private TextView yourGroupsTextView;
     private TextView noGroupsTextView;
     private TextView viewAllGroups;
+    private TextView viewAllExploreGroups;
     private Context context;
     private Spinner spinnerIcons;
     private String selectedIcon;
@@ -83,6 +83,7 @@ public class Dashboard extends AppCompatActivity {
         yourGroupsTextView = findViewById(R.id.yourGroupsTextView);
         noGroupsTextView = findViewById(R.id.noGroupsTextView);
         viewAllGroups = findViewById(R.id.viewAllGroups);
+        viewAllExploreGroups = findViewById(R.id.viewAllExploreGroups);
         context = this;
 
         checkVisibility();
@@ -90,7 +91,19 @@ public class Dashboard extends AppCompatActivity {
         viewAllGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Dashboard.this, AllGroupsActivity.class);
+                Intent intent = new Intent(DashboardActivity.this, AllGroupsActivity.class);
+                Bundle args = new Bundle();
+                args.putSerializable("groups", (Serializable) groups);
+                intent.putExtra("BUNDLE", args);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        });
+
+        viewAllExploreGroups.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, ExploreActivity.class);
                 Bundle args = new Bundle();
                 args.putSerializable("groups", (Serializable) groups);
                 intent.putExtra("BUNDLE", args);
@@ -143,7 +156,7 @@ public class Dashboard extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(Dashboard.this)
+                new AlertDialog.Builder(DashboardActivity.this)
                         .setTitle("Logout")
                         .setMessage("Are you sure you want to logout?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -187,7 +200,7 @@ public class Dashboard extends AppCompatActivity {
         System.out.println(FirebaseAuth.getInstance());
         FirebaseAuth.getInstance().signOut();
         finish();
-        Intent intent = new Intent(Dashboard.this, LoginActivity.class);
+        Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -286,7 +299,7 @@ public class Dashboard extends AppCompatActivity {
         groupCard1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Dashboard.this, GroupView.class);
+                Intent intent = new Intent(DashboardActivity.this, GroupViewActivity.class);
                 intent.putExtra("group", groups.get(0));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
@@ -296,7 +309,7 @@ public class Dashboard extends AppCompatActivity {
         groupCard2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Dashboard.this, GroupView.class);
+                Intent intent = new Intent(DashboardActivity.this, GroupViewActivity.class);
                 intent.putExtra("group", groups.get(1));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
@@ -306,7 +319,7 @@ public class Dashboard extends AppCompatActivity {
         groupCard3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Dashboard.this, GroupView.class);
+                Intent intent = new Intent(DashboardActivity.this, GroupViewActivity.class);
                 intent.putExtra("group", groups.get(2));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
@@ -316,7 +329,7 @@ public class Dashboard extends AppCompatActivity {
         groupCard4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Dashboard.this, GroupView.class);
+                Intent intent = new Intent(DashboardActivity.this, GroupViewActivity.class);
                 intent.putExtra("group", groups.get(3));
                 intent.putExtra("userId", userId);
                 startActivity(intent);
@@ -384,7 +397,7 @@ public class Dashboard extends AppCompatActivity {
     private void refreshList() {
         searchingListView.setVisibility(View.VISIBLE);
         final ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(Dashboard.this, android.R.layout.simple_list_item_1, searchingListOfNames);
+                new ArrayAdapter<String>(DashboardActivity.this, android.R.layout.simple_list_item_1, searchingListOfNames);
         searchingListView.setAdapter(itemsAdapter);
 
         searchingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -392,14 +405,14 @@ public class Dashboard extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 for (Group grp : groups) {
                     if (grp.getId().equals(searchingListOfIds.get(position))) {
-                        Intent intent = new Intent(Dashboard.this, GroupView.class);
+                        Intent intent = new Intent(DashboardActivity.this, GroupViewActivity.class);
                         intent.putExtra("group", grp);
                         intent.putExtra("userId", userId);
                         startActivity(intent);
                         return;
                     }
                 }
-                new AlertDialog.Builder(Dashboard.this)
+                new AlertDialog.Builder(DashboardActivity.this)
                         .setTitle("Join to group")
                         .setMessage("Are you sure you want to join to this group?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

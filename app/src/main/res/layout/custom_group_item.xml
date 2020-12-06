@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/groupItemLayout"
+        android:layout_width="150dp"
+        android:layout_height="160dp"
+        android:background="@drawable/custom_small_container"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/groupTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/groupNumberOfMembers"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/groupTitle"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="7dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="192 members"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/groupNumberOfSurveys"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/groupNumberOfMembers"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="5dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="23 surveys"
+            android:textSize="13sp" />
+
+
+        <ImageView
+            android:id="@+id/groupIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/groupNumberOfSurveys"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:foregroundGravity="center"
+            android:paddingBottom="20dp"
+            android:src="@drawable/budget" />
+
+        <ImageView
+            android:id="@+id/buttonMenu"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/menu" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/groupItemLayout2"
+        android:layout_width="150dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@+id/groupItemLayout"
+        android:background="@drawable/custom_small_container"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/groupTitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/groupNumberOfMembers2"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/groupTitle2"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="7dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="192 members"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/groupNumberOfSurveys2"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/groupNumberOfMembers2"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="23 surveys"
+            android:textSize="13sp" />
+
+
+        <ImageView
+            android:id="@+id/groupIcon2"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
+            android:layout_below="@+id/groupNumberOfSurveys2"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:foregroundGravity="center"
+            android:paddingBottom="20dp"
+            android:src="@drawable/budget" />
+
+        <ImageView
+            android:id="@+id/buttonMenu2"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/menu" />
+    </RelativeLayout>
+</RelativeLayout>

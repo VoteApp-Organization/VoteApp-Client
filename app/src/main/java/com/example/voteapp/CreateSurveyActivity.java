@@ -21,12 +21,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.voteapp.model.Group;
+import com.example.voteapp.model.SingleQuestion;
+import com.example.voteapp.model.Survey;
 import com.example.voteapp.utils.CommonUtils;
 import com.example.voteapp.utils.RequestManager;
 import com.example.voteapp.utils.StaticResources;
@@ -38,20 +40,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CreateSurveyActivity extends AppCompatActivity {
     private Button previewSurveyBtn;
     private Button cancelSurveyBtn;
     private Button shareSurveyButton;
+    private Button backButton;
     private Group group;
     private String userId;
     private String surveyName;
@@ -89,6 +87,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
         previewSurveyBtn = findViewById(R.id.buttonPreviewSurvey);
         cancelSurveyBtn = findViewById(R.id.buttonCancelSurvey);
         shareSurveyButton = findViewById(R.id.createSurveyShare);
+        backButton = findViewById(R.id.backButton);
 
         previewSurveyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,14 +112,19 @@ public class CreateSurveyActivity extends AppCompatActivity {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         shareSurveyButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-                Toast.makeText(CreateSurveyActivity.this, "Survey will be shared here",
-                        Toast.LENGTH_SHORT).show();
                 try {
                     sendSurvey(new Survey(surveyName, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
                 } catch (JSONException e) {
@@ -328,7 +332,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(CreateSurveyActivity.this, GroupView.class);
+        Intent intent = new Intent(CreateSurveyActivity.this, GroupViewActivity.class);
         intent.putExtra("userId", userId);
         intent.putExtra("group", group);
         intent.putExtra("surveyName", surveyName);
@@ -339,6 +343,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
         Gson gsonPackage = new Gson();
         String jsonString = gsonPackage.toJson(survey);
         JSONObject obj = new JSONObject(jsonString);
+        obj.put("group_id", group.getId());
 
         Gson gsonQuestions = new Gson();
         String element = gsonQuestions.toJson(

@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.w("RegisterActivity", "signInWithEmail:SUCCESS" + response.toString());
-                        Intent intent = new Intent(RegisterActivity.this, Dashboard.class);
+                        Intent intent = new Intent(RegisterActivity.this, DashboardActivity.class);
                         try {
                             intent.putExtra("userId", response.getString("id"));
                         } catch (JSONException e) {
