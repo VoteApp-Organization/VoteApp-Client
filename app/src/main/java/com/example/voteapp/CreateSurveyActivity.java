@@ -53,6 +53,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
     private Group group;
     private String userId;
     private String surveyName;
+    private String surveyDesc;
     private String surveyPicture;
     private List<SingleQuestion> allQuestions = new ArrayList<>();
     private EditText addQuestionEditText;
@@ -98,7 +99,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                 Bundle args = new Bundle();
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-                args.putSerializable("survey", (Serializable) new Survey(surveyName, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
+                args.putSerializable("survey", (Serializable) new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
                 args.putSerializable("questionsList", (Serializable) allQuestions);
                 intent.putExtra("BUNDLE", args);
                 startActivity(intent);
@@ -126,7 +127,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
                 try {
-                    sendSurvey(new Survey(surveyName, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
+                    sendSurvey(new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -322,10 +323,12 @@ public class CreateSurveyActivity extends AppCompatActivity {
             group = (Group) intent.getSerializableExtra("group");
             userId = intent.getStringExtra("userId");
             surveyName = survey.getVoteTitle();
+            surveyDesc = survey.getSurveyDescription();
             surveyPicture = survey.getSurveyPicture();
             refreshList();
         }else{
             surveyName = intent.getStringExtra("surveyName");
+            surveyDesc = intent.getStringExtra("surveyDesc");
             surveyPicture = intent.getStringExtra("surveyPicture");
         }
     }
