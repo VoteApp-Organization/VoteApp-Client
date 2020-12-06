@@ -206,9 +206,10 @@ public class GroupViewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(GroupViewActivity.this, DashboardActivity.class);
-        intent.putExtra("userId", userId);
-        startActivity(intent);
+        finish();
+      //  Intent intent = new Intent(GroupViewActivity.this, DashboardActivity.class);
+     //   intent.putExtra("userId", userId);
+     //   startActivity(intent);
     }
 
     private void sendPostLeaveGroup() throws JSONException {

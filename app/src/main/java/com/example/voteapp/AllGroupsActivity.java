@@ -51,6 +51,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.voteapp.utils.CommonUtils.sendPostDeleteGroup;
 import static com.example.voteapp.utils.CommonUtils.sendPostJoinGroup;
 import static com.example.voteapp.utils.CommonUtils.sendPostLeaveGroup;
 
@@ -75,6 +76,7 @@ public class AllGroupsActivity extends AppCompatActivity {
     private LinearLayout exploreLayout;
     private View convertView;
     private LayoutInflater inflater;
+    private View.OnClickListener onClickListenerItem;
     private View.OnClickListener onClickListenerMenu;
     private ImageView menu;
     private ImageView menu2;
@@ -114,6 +116,7 @@ public class AllGroupsActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         selectedIcon = String.valueOf(parent.getAdapter().getItem(position));
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
@@ -143,6 +146,7 @@ public class AllGroupsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        refresh();
     }
 
     @Override
@@ -253,106 +257,42 @@ public class AllGroupsActivity extends AppCompatActivity {
         for (int i = 0; i < groups.size(); i++) {
             final int finalI = i;
             final View line = convertView.inflate(this, R.layout.custom_group_item, null);
-            line.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, GroupViewActivity.class);
-                    intent.putExtra("group", groups.get(finalI));
-                    intent.putExtra("userId", userId);
-                    context.startActivity(intent);
-                }
-            });
             TextView titleTextView = line.findViewById(R.id.groupTitle);
             TextView groupNumberOfSurveys = line.findViewById(R.id.groupNumberOfSurveys);
             groupNumberOfSurveys.setVisibility(View.GONE);
             TextView groupNumberOfMembers = line.findViewById(R.id.groupNumberOfMembers);
-            if(groups.get(i).getDescription().equals("")){
+            if (groups.get(i).getDescription().equals("")) {
                 groupNumberOfMembers.setText("No description");
-            }else{
+            } else {
                 groupNumberOfMembers.setText(groups.get(i).getDescription());
             }
             ImageView icon = line.findViewById(R.id.groupIcon);
             menu = line.findViewById(R.id.buttonMenu);
             menu.setVisibility(View.VISIBLE);
-            menu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopupMenu popup = new PopupMenu(context, v);
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getTitle().toString()) {
-                                case "Edit":
-                                    Toast.makeText(context,
-                                            item.getTitle(), Toast.LENGTH_SHORT).show();
-                                    break;
-                                case "Leave":
-                                    leaveGroupWarn(context, finalI, 0);
-                                    break;
-                                case "Delete":
-                                    leaveGroupWarn(context, finalI, 1);
-                                    break;
-                                default:
-                                    ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                                    ClipData clip = ClipData.newPlainText("password", groups.get(finalI).getGroup_password());
-                                    clipboard.setPrimaryClip(clip);
-                                    Toast.makeText(context,
-                                            "Password has been copied to clipboard", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                            return true;
-                        }
-                    });
-                    prepareMenu(groups.get(finalI), popup);
-                }
-            });
+            menu.setOnClickListener(onClickListenerMenu);
+            menu.setTag(i);
             titleTextView.setText(groups.get(i).getName());
             icon.setImageResource(StaticResources.mapOfIcons.get(groups.get(i).getPicture_name()));
+            RelativeLayout groupItemLayout1 = line.findViewById(R.id.groupItemLayout);
+            groupItemLayout1.setOnClickListener(onClickListenerItem);
+            groupItemLayout1.setTag(i);
             RelativeLayout groupItemLayout2 = line.findViewById(R.id.groupItemLayout2);
             i++;
             if (i < groups.size()) {
+                groupItemLayout2.setOnClickListener(onClickListenerItem);
+                groupItemLayout2.setTag(i);
                 TextView groupNumberOfSurveys2 = line.findViewById(R.id.groupNumberOfSurveys2);
                 groupNumberOfSurveys2.setVisibility(View.GONE);
                 TextView groupNumberOfMembers2 = line.findViewById(R.id.groupNumberOfMembers2);
-                if(groups.get(i).getDescription().equals("")){
+                if (groups.get(i).getDescription().equals("")) {
                     groupNumberOfMembers2.setText("No description");
-                }else{
+                } else {
                     groupNumberOfMembers2.setText(groups.get(i).getDescription());
                 }
                 menu2 = line.findViewById(R.id.buttonMenu2);
                 menu2.setVisibility(View.VISIBLE);
-                menu2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopupMenu popup = new PopupMenu(context, v);
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getTitle().toString()) {
-                                case "Edit":
-                                    Toast.makeText(context,
-                                            item.getTitle(), Toast.LENGTH_SHORT).show();
-                                    break;
-                                case "Leave":
-                                    leaveGroupWarn(context, finalI, 0);
-                                    break;
-                                case "Delete":
-                                    leaveGroupWarn(context, finalI, 1);
-                                    break;
-                                default:
-                                    ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                                    ClipData clip = ClipData.newPlainText("password", groups.get(finalI).getGroup_password());
-                                    clipboard.setPrimaryClip(clip);
-                                    Toast.makeText(context,
-                                            "Password has been copied to clipboard", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                            return true;
-                        }
-                    });
-                    prepareMenu(groups.get(finalI), popup);
-                }
-            });
+                menu2.setOnClickListener(onClickListenerMenu);
+                menu2.setTag(i);
                 groupItemLayout2.setVisibility(View.VISIBLE);
                 TextView titleTextView2 = line.findViewById(R.id.groupTitle2);
                 ImageView icon2 = line.findViewById(R.id.groupIcon2);
@@ -363,6 +303,49 @@ public class AllGroupsActivity extends AppCompatActivity {
             }
             exploreLayout.addView(line);
         }
+
+        onClickListenerItem = new View.OnClickListener() {
+            public void onClick(View v) {
+                final int i = (int) v.getTag();
+                Intent intent = new Intent(AllGroupsActivity.this, GroupViewActivity.class);
+                intent.putExtra("group", groups.get(i));
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        };
+
+        onClickListenerMenu = new View.OnClickListener() {
+            public void onClick(View v) {
+                final int i = (int) v.getTag();
+                PopupMenu popup = new PopupMenu(context, v);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getTitle().toString()) {
+                            case "Edit":
+                                Toast.makeText(context,
+                                        item.getTitle(), Toast.LENGTH_SHORT).show();
+                                break;
+                            case "Leave":
+                                leaveGroupWarn(context, i, 0);
+                                break;
+                            case "Delete":
+                                leaveGroupWarn(context, i, 1);
+                                break;
+                            default:
+                                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData clip = ClipData.newPlainText("password", groups.get(i).getGroup_password());
+                                clipboard.setPrimaryClip(clip);
+                                Toast.makeText(context,
+                                        "Password has been copied to clipboard", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                prepareMenu(groups.get(i), popup);
+            }
+        };
     }
 
     private void prepareMenu(Group grp, PopupMenu popup) {
@@ -410,6 +393,11 @@ public class AllGroupsActivity extends AppCompatActivity {
                     .setMessage("Are you sure you want to delete this group?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                sendPostDeleteGroup(context, userId, groups.get(position).getId());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             Toast.makeText(context,
                                     "Group \"" + groups.get(position).getName() + "\" has been deleted", Toast.LENGTH_SHORT).show();
                             groups.remove(position);
