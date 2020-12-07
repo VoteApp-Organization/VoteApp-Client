@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -51,6 +52,7 @@ public class GroupViewActivity extends AppCompatActivity {
     private TextView noSurveysTextView;
     private Button buttonCreate3;
     private Spinner spinnerIcons;
+    private Switch isAuthorVoting;
     private String selectedIcon;
     private Group group;
 
@@ -109,6 +111,7 @@ public class GroupViewActivity extends AppCompatActivity {
         surveyDescriptionEditText = customDialog.findViewById(R.id.surveyDescriptionEditText);
         spinnerIcons = customDialog.findViewById(R.id.spinnerIcons);
         buttonCreate3 = customDialog.findViewById(R.id.buttonCreate3);
+        isAuthorVoting = customDialog.findViewById(R.id.isAuthorVoting);
 
         final CustomSpinner customAdapter = new CustomSpinner(getApplicationContext());
         spinnerIcons.setAdapter(customAdapter);
@@ -133,6 +136,7 @@ public class GroupViewActivity extends AppCompatActivity {
                 intent.putExtra("surveyName", surveyNameEditText.getText().toString());
                 intent.putExtra("surveyDesc", surveyDescriptionEditText.getText().toString());
                 intent.putExtra("surveyPicture", selectedIcon);
+                intent.putExtra("isAuthorVoting", isAuthorVoting.isChecked());
                 startActivity(intent);
                 customDialog.dismiss();
             }
@@ -203,6 +207,17 @@ public class GroupViewActivity extends AppCompatActivity {
         }
         CustomAdapter adapter = new CustomAdapter(this, allSurveys, userId, group);
         list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                Intent intent = new Intent(GroupViewActivity.this, SurveyContainerActivity.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("group", group);
+                intent.putExtra("surveyTitle", allSurveys.get(pos).getVoteTitle());
+                intent.putExtra("survey", allSurveys.get(pos));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

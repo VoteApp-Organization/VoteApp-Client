@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -74,6 +75,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
     private View.OnClickListener addAnswerListener;
     private View.OnClickListener showHideExpandedListListener;
     private Survey survey;
+    private boolean isAuthorVoting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +101,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                 Bundle args = new Bundle();
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-                args.putSerializable("survey", (Serializable) new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture, true));
+                args.putSerializable("survey", (Serializable) new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture, isAuthorVoting));
                 args.putSerializable("questionsList", (Serializable) allQuestions);
                 intent.putExtra("BUNDLE", args);
                 startActivity(intent);
@@ -127,7 +129,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
                 try {
-                    sendSurvey(new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture,true ));
+                    sendSurvey(new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture, isAuthorVoting));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -316,8 +318,9 @@ public class CreateSurveyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         userId = intent.getStringExtra("userId");
+        isAuthorVoting = intent.getBooleanExtra("isAuthorVoting", false);
         group = (Group) intent.getSerializableExtra("group");
-        if(args != null) {
+        if (args != null) {
             allQuestions = (List<SingleQuestion>) args.getSerializable("questionsList");
             survey = (Survey) args.getSerializable("survey");
             group = (Group) intent.getSerializableExtra("group");
@@ -326,7 +329,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
             surveyDesc = survey.getSurveyDescription();
             surveyPicture = survey.getSurveyPicture();
             refreshList();
-        }else{
+        } else {
             surveyName = intent.getStringExtra("surveyName");
             surveyDesc = intent.getStringExtra("surveyDesc");
             surveyPicture = intent.getStringExtra("surveyPicture");

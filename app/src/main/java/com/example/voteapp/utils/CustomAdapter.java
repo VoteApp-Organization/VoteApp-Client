@@ -63,28 +63,7 @@ public class CustomAdapter extends BaseAdapter {
         final TextView titleTextView = (TextView) convertView.findViewById(R.id.surveyTitle);
         TextView numberOfQuestions = (TextView) convertView.findViewById(R.id.surveyNumberOfQuestions);
         ImageView surveyIcon = (ImageView) convertView.findViewById(R.id.surveyIcon);
-        final Button buttonOpenSurvey = (Button) convertView.findViewById(R.id.buttonOpenSurvey);
         RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.groupItemLayout);
-
-        System.out.println(position);
-        System.out.println("TU " + surveyList.get(position));
-
-        buttonOpenSurvey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (buttonOpenSurvey.getText().equals("Already voted")) {
-                    Toast.makeText(context, "You can vote only once!",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(context, SurveyContainerActivity.class);
-                    intent.putExtra("userId", userId);
-                    intent.putExtra("group", group);
-                    intent.putExtra("surveyTitle", titleTextView.getText().toString().trim());
-                    intent.putExtra("survey", surveyList.get(position));
-                    context.startActivity(intent);
-                }
-            }
-        });
 
         PorterDuffColorFilter greyFilter = new PorterDuffColorFilter(Color.rgb(230, 230, 230), PorterDuff.Mode.MULTIPLY);
 
@@ -93,6 +72,14 @@ public class CustomAdapter extends BaseAdapter {
             titleTextView.setText(str.getVoteTitle());
             numberOfQuestions.setText("(" + str.getNumberOfQuestions() + " questions)");
             surveyIcon.setImageResource(StaticResources.mapOfIcons.get(str.getSurveyPicture()));
+            if (str.answerHasBeenGiven != null) {
+                if (str.answerHasBeenGiven) {
+                    layout.getBackground().setColorFilter(greyFilter);
+                }
+            }
+            if (userId.equals(String.valueOf(str.getAuthor_id())) && str.authorIsVoting == null) {
+                layout.getBackground().setColorFilter(greyFilter);
+            }
         }
 
         return convertView;

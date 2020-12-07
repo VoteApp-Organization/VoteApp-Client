@@ -38,11 +38,13 @@
                 android:id="@+id/spinnerIcons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.181"
+                app:layout_constraintHorizontal_bias="0.132"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/surveyDescriptionEditText"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
                 app:layout_constraintVertical_bias="0.0" />
 
             <EditText
@@ -95,11 +97,41 @@
                 app:layout_constraintTop_toBottomOf="@+id/createSurveyDescription"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:paddingStart="3dp"
+                android:text="Author can vote?"
+                android:textSize="18sp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/surveyDescriptionEditText"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Switch
+                android:id="@+id/isAuthorVoting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="15dp"
+                app:layout_constraintHorizontal_bias="0.088"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/surveyDescriptionEditText"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
             <Button
                 android:id="@+id/buttonCreate3"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/custom_button"
                 android:text="Create"
                 android:textAllCaps="false"
@@ -110,7 +142,7 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinnerIcons"
-                app:layout_constraintVertical_bias="0" />
+                app:layout_constraintVertical_bias="0.0" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

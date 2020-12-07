@@ -145,12 +145,9 @@ public class SurveyContainerActivity extends AppCompatActivity {
             startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
             startSurvey.setText("Already voted");
         }
-
-        if (group.getOwner_id().equals(Long.valueOf(userId))) {
-            if (survey.authorIsVoting != null && !survey.authorIsVoting) {
-                startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
-                startSurvey.setText("Author can't vote");
-            }
+        if (group.getOwner_id().equals(Long.valueOf(userId)) && survey.authorIsVoting == null) {
+            startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
+            startSurvey.setText("Author can't vote");
             showAnswersButton.setVisibility(View.VISIBLE);
         } else {
             showAnswersButton.setVisibility(View.INVISIBLE);
