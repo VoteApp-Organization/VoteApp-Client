@@ -8,10 +8,10 @@ public class Survey implements Serializable {
     private Long vote_Id;
     private String voteTitle;
     public String surveyDescription;
-    private Date createdDate;
+    private String createdDate;
     private Long author_id;
     private String startDate;
-    private Date endDate;
+    private String endDate;
     private Boolean isPublicVote;
     private Boolean isAnonymousVote;
     private Boolean isMandatory;
@@ -19,8 +19,9 @@ public class Survey implements Serializable {
     public String voteDate;
     public Integer numberOfQuestions;
     public String surveyPicture;
+    public Boolean authorIsVoting;
 
-    public Survey(String voteTitle, String surveyDescription, Long author_id, String startDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Integer numberOfQuestions, String surveyPicture) {
+    public Survey(String voteTitle, String surveyDescription, Long author_id, String startDate, Boolean isPublicVote, Boolean isAnonymousVote, Boolean isMandatory, Integer numberOfQuestions, String surveyPicture, Boolean authorIsVoting ) {
         this.voteTitle = voteTitle;
         this.surveyDescription = surveyDescription;
         this.author_id = author_id;
@@ -30,6 +31,7 @@ public class Survey implements Serializable {
         this.isMandatory = isMandatory;
         this.numberOfQuestions = numberOfQuestions;
         this.surveyPicture = surveyPicture;
+        this.authorIsVoting  = authorIsVoting;
     }
 
     public String getSurveyDescription() {
@@ -56,11 +58,11 @@ public class Survey implements Serializable {
         this.voteTitle = voteTitle;
     }
 
-    public Date getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -80,11 +82,11 @@ public class Survey implements Serializable {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -142,5 +144,12 @@ public class Survey implements Serializable {
 
     public void setSurveyPicture(String surveyPicture) {
         this.surveyPicture = surveyPicture;
+    }
+
+    public Boolean getAuthorIsVoting() {
+        return authorIsVoting;
+    }
+    public void setAuthorIsVoting(Boolean authorIsVoting) {
+        this.authorIsVoting = authorIsVoting;
     }
 }

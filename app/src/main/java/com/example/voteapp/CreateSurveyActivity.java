@@ -99,7 +99,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                 Bundle args = new Bundle();
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-                args.putSerializable("survey", (Serializable) new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
+                args.putSerializable("survey", (Serializable) new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture, true));
                 args.putSerializable("questionsList", (Serializable) allQuestions);
                 intent.putExtra("BUNDLE", args);
                 startActivity(intent);
@@ -127,7 +127,7 @@ public class CreateSurveyActivity extends AppCompatActivity {
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
                 try {
-                    sendSurvey(new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture));
+                    sendSurvey(new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture,true ));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
