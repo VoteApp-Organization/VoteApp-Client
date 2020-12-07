@@ -19,6 +19,11 @@ import java.util.List;
 public class PreviewSurveyContainerActivity extends AppCompatActivity {
 
     private TextView surveyTitle;
+    private TextView surveyDescription;
+    private TextView surveyStartTime;
+    private TextView surveyEndsTime;
+    private TextView surveyNumberOfQuestions;
+    private TextView surveyDateOfVote;
     private TextView previewMode;
     private Button startSurvey;
     private Button backButton;
@@ -33,6 +38,11 @@ public class PreviewSurveyContainerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_survey_container);
 
         surveyTitle = findViewById(R.id.surveyTitle);
+        surveyDescription = findViewById(R.id.surveyDescription);
+        surveyStartTime = findViewById(R.id.surveyStartTime);
+        surveyEndsTime = findViewById(R.id.surveyEndsTime);
+        surveyNumberOfQuestions = findViewById(R.id.surveyNumberOfQuestions);
+        surveyDateOfVote = findViewById(R.id.surveyDateOfVote);
         previewMode = findViewById(R.id.previewMode);
         startSurvey = findViewById(R.id.startSurveyBtn);
         backButton = findViewById(R.id.backButton);
@@ -43,7 +53,7 @@ public class PreviewSurveyContainerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PreviewSurveyContainerActivity.this, PreviewSingleQuestionActivity.class);
                 Bundle args = new Bundle();
-                args.putSerializable("questionsList",(Serializable)allQuestions);
+                args.putSerializable("questionsList", (Serializable) allQuestions);
                 args.putSerializable("survey", survey);
                 intent.putExtra("BUNDLE", args);
                 intent.putExtra("questionNumber", 0);
@@ -72,6 +82,11 @@ public class PreviewSurveyContainerActivity extends AppCompatActivity {
         survey = (Survey) args.getSerializable("survey");
         allQuestions = (List<SingleQuestion>) args.getSerializable("questionsList");
         surveyTitle.setText(survey.getVoteTitle());
+        surveyDescription.setText(survey.getSurveyDescription());
+        surveyStartTime.setText(survey.getStartDate());
+        surveyEndsTime.setText(survey.getEndDate());
+        surveyNumberOfQuestions.setText(String.valueOf(survey.getNumberOfQuestions()));
+        surveyDateOfVote.setText("Not voted yet");
     }
 
     @Override

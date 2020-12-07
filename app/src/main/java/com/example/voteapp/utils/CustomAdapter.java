@@ -80,7 +80,7 @@ public class CustomAdapter extends BaseAdapter {
                     intent.putExtra("userId", userId);
                     intent.putExtra("group", group);
                     intent.putExtra("surveyTitle", titleTextView.getText().toString().trim());
-                    intent.putExtra("surveyId", String.valueOf(surveyList.get(position).getVote_Id()));
+                    intent.putExtra("survey", surveyList.get(position));
                     context.startActivity(intent);
                 }
             }
@@ -93,11 +93,6 @@ public class CustomAdapter extends BaseAdapter {
             titleTextView.setText(str.getVoteTitle());
             numberOfQuestions.setText("(" + str.getNumberOfQuestions() + " questions)");
             surveyIcon.setImageResource(StaticResources.mapOfIcons.get(str.getSurveyPicture()));
-            if (surveyList.get(position).getAnswerHasBeenGiven()) {
-                layout.getBackground().setColorFilter(greyFilter);
-                buttonOpenSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
-                buttonOpenSurvey.setText("Already voted");
-            }
         }
 
         return convertView;

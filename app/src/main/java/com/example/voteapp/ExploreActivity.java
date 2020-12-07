@@ -20,7 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.voteapp.model.Group;
+import com.example.voteapp.model.GroupsToExploreWrapper;
 import com.example.voteapp.utils.RequestManager;
 import com.example.voteapp.utils.StaticResources;
 import com.google.gson.Gson;
@@ -34,7 +34,7 @@ import java.util.List;
 import static com.example.voteapp.utils.CommonUtils.sendPostJoinGroup;
 
 public class ExploreActivity extends AppCompatActivity {
-    private List<Group> groups = new ArrayList<>();
+    private List<GroupsToExploreWrapper> groupsWrapper = new ArrayList<>();
     private Button backButton;
     private LinearLayout exploreLayout;
     private String userId;
@@ -78,11 +78,11 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     private void parseUserGroups(Object response) throws JSONException {
-        groups.clear();
+        groupsWrapper.clear();
         JSONArray jsonArray = ((JSONArray) response);
         Gson gson = new Gson();
         for (int i = 0; i < jsonArray.length(); i++) {
-            groups.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Group.class));
+            groupsWrapper.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), GroupsToExploreWrapper.class));
         }
         refresh();
     }
@@ -113,29 +113,37 @@ public class ExploreActivity extends AppCompatActivity {
 
     private void refresh() {
         exploreLayout.removeAllViews();
-        for (int i = 0; i < groups.size(); i++) {
+        for (int i = 0; i < groupsWrapper.size(); i++) {
             final View line = convertView.inflate(this, R.layout.custom_group_item, null);
             TextView titleTextView = line.findViewById(R.id.groupTitle);
+            TextView groupNumberOfMembers = line.findViewById(R.id.groupNumberOfMembers);
+            TextView groupNumberOfSurveys = line.findViewById(R.id.groupNumberOfSurveys);
             ImageView icon = line.findViewById(R.id.groupIcon);
             ImageView menu = line.findViewById(R.id.buttonMenu);
             menu.setVisibility(View.GONE);
-            titleTextView.setText(groups.get(i).getName());
-            icon.setImageResource(StaticResources.mapOfIcons.get(groups.get(i).getPicture_name()));
+            titleTextView.setText(groupsWrapper.get(i).group.getName());
+            groupNumberOfMembers.setText(groupsWrapper.get(i).numberOfUsers + " members");
+            groupNumberOfSurveys.setText(groupsWrapper.get(i).numberOfSurveys + " surveys");
+            icon.setImageResource(StaticResources.mapOfIcons.get(groupsWrapper.get(i).group.getPicture_name()));
             RelativeLayout groupItemLayout1 = line.findViewById(R.id.groupItemLayout);
             RelativeLayout groupItemLayout2 = line.findViewById(R.id.groupItemLayout2);
             groupItemLayout1.setOnClickListener(onClickListenerMenu);
             groupItemLayout1.setTag(i);
             i++;
-            if (i < groups.size()) {
+            if (i < groupsWrapper.size()) {
                 groupItemLayout2.setOnClickListener(onClickListenerMenu);
                 groupItemLayout2.setTag(i);
                 ImageView menu2 = line.findViewById(R.id.buttonMenu2);
                 menu2.setVisibility(View.GONE);
                 groupItemLayout2.setVisibility(View.VISIBLE);
                 TextView titleTextView2 = line.findViewById(R.id.groupTitle2);
+                TextView groupNumberOfMembers2 = line.findViewById(R.id.groupNumberOfMembers2);
+                TextView groupNumberOfSurveys2 = line.findViewById(R.id.groupNumberOfSurveys2);
+                groupNumberOfMembers2.setText(groupsWrapper.get(i).numberOfUsers + " members");
+                groupNumberOfSurveys2.setText(groupsWrapper.get(i).numberOfSurveys + " surveys");
                 ImageView icon2 = line.findViewById(R.id.groupIcon2);
-                titleTextView2.setText(groups.get(i).getName());
-                icon2.setImageResource(StaticResources.mapOfIcons.get(groups.get(i).getPicture_name()));
+                titleTextView2.setText(groupsWrapper.get(i).group.getName());
+                icon2.setImageResource(StaticResources.mapOfIcons.get(groupsWrapper.get(i).group.getPicture_name()));
             } else {
                 groupItemLayout2.setVisibility(View.INVISIBLE);
             }
@@ -153,9 +161,9 @@ public class ExploreActivity extends AppCompatActivity {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    sendPostJoinGroup(context, userId, groups.get(i).getId(), "");
+                                    sendPostJoinGroup(context, userId, groupsWrapper.get(i).group.getId(), "");
                                     Intent intent = new Intent(ExploreActivity.this, GroupViewActivity.class);
-                                    intent.putExtra("group", groups.get(i));
+                                    intent.putExtra("group", groupsWrapper.get(i).group);
                                     intent.putExtra("userId", userId);
                                     startActivity(intent);
                                 } catch (JSONException e) {

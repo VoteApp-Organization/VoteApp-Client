@@ -118,6 +118,7 @@ public class GroupViewActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedIcon = String.valueOf(parent.getAdapter().getItem(position));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -149,9 +150,9 @@ public class GroupViewActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         groupTitle.setText(group.getName());
         getGroupInfoApiRequest(group.getId());
-        if(group.getOwner_id().equals(userId)){
+        if (group.getOwner_id().equals(userId)) {
             leaveButton.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             leaveButton.setVisibility(View.VISIBLE);
         }
     }
@@ -176,9 +177,9 @@ public class GroupViewActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("API error: ", "#onErrorResponse in GroupView");
-                if(allSurveys != null && !allSurveys.isEmpty()){
+                if (allSurveys != null && !allSurveys.isEmpty()) {
                     noSurveysTextView.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     noSurveysTextView.setVisibility(View.VISIBLE);
                 }
             }
@@ -194,7 +195,7 @@ public class GroupViewActivity extends AppCompatActivity {
         for (int i = 0; i < jsonArray.length(); i++) {
             allSurveys.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Survey.class));
         }
-        
+
         if (allSurveys.isEmpty()) {
             noSurveysTextView.setVisibility(View.VISIBLE);
         } else {
@@ -206,10 +207,9 @@ public class GroupViewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
-      //  Intent intent = new Intent(GroupViewActivity.this, DashboardActivity.class);
-     //   intent.putExtra("userId", userId);
-     //   startActivity(intent);
+        Intent intent = new Intent(GroupViewActivity.this, DashboardActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
     }
 
     private void sendPostLeaveGroup() throws JSONException {
