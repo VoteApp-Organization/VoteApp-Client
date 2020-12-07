@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.voteapp.model.Group;
+import com.example.voteapp.model.GroupsToExploreWrapper;
 import com.example.voteapp.utils.CustomSpinner;
 import com.example.voteapp.utils.RequestManager;
 import com.example.voteapp.utils.StaticResources;
@@ -52,6 +53,7 @@ public class DashboardActivity extends AppCompatActivity {
     private List<ImageView> imageViewList = new ArrayList<>();
     private List<LinearLayout> cardGroupsList = new ArrayList<>();
     private List<Group> groups = new ArrayList<>();
+    private List<GroupsToExploreWrapper> publicGroups = new ArrayList<>();
     private String userId;
     private Button buttonCreate;
     private Button logoutBtn;
@@ -131,6 +133,7 @@ public class DashboardActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         selectedIcon = String.valueOf(parent.getAdapter().getItem(position));
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
@@ -219,6 +222,7 @@ public class DashboardActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Log.e("Response", response.toString());
                         getUserInfoApiRequest(userId);
+                        getAllPublicGroups();
                     }
                 },
                 new Response.ErrorListener() {
@@ -237,34 +241,110 @@ public class DashboardActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         Log.e("Dashboard", "user Id= " + userId);
         getUserInfoApiRequest(userId);
+        getAllPublicGroups();
     }
 
-    private void parseUserGroups(Object response) throws JSONException {
-        groups.clear();
-        for (TextView textView : textViewList) {
-            textView.setText("");
-        }
-
-        JSONArray jsonArray = ((JSONArray) response);
-        Gson gson = new Gson();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            groups.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Group.class));
-            if (i < 4) {
-                textViewList.get(i).setText(groups.get(i).getName());
-                imageViewList.get(i).setImageResource(StaticResources.mapOfIcons.get(groups.get(i).getPicture_name()));
+    private void parseUserGroups(Object response, boolean yourGroups) throws JSONException {
+        if (yourGroups) {
+            groups.clear();
+            for (TextView textView : textViewList) {
+                textView.setText("");
             }
+
+            JSONArray jsonArray = ((JSONArray) response);
+            Gson gson = new Gson();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                groups.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Group.class));
+                if (i < 4) {
+                    textViewList.get(i).setText(groups.get(i).getName());
+                    imageViewList.get(i).setImageResource(StaticResources.mapOfIcons.get(groups.get(i).getPicture_name()));
+                }
+            }
+
+            if (groups.isEmpty()) {
+                noGroupsTextView.setVisibility(View.VISIBLE);
+                viewAllGroups.setVisibility(View.INVISIBLE);
+                yourGroupsTextView.setVisibility(View.INVISIBLE);
+            } else {
+                noGroupsTextView.setVisibility(View.INVISIBLE);
+                viewAllGroups.setVisibility(View.VISIBLE);
+                yourGroupsTextView.setVisibility(View.VISIBLE);
+            }
+            checkVisibility();
+        } else {
+            publicGroups.clear();
+            JSONArray jsonArray = ((JSONArray) response);
+            Gson gson = new Gson();
+            for (int i = 0; i < jsonArray.length() && i < 2; i++) {
+                publicGroups.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), GroupsToExploreWrapper.class));
+            }
+            refreshExplore();
+        }
+    }
+
+    private void refreshExplore() {
+        View.OnClickListener alert = new View.OnClickListener() {
+            public void onClick(View v) {
+                final int i = (int) v.getTag();
+                Log.e("asd", String.valueOf(i));
+
+                new AlertDialog.Builder(DashboardActivity.this)
+                        .setTitle("Join to group")
+                        .setMessage("Are you sure you want to join to this group?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    sendPostJoinGroup(context, userId, publicGroups.get(i).group.getId(), "");
+                                    Intent intent = new Intent(DashboardActivity.this, GroupViewActivity.class);
+                                    intent.putExtra("group", publicGroups.get(i).group);
+                                    intent.putExtra("userId", userId);
+                                    startActivity(intent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        };
+
+        LinearLayout cardPublicGroup1 = findViewById(R.id.cardPublicGroup1);
+        cardPublicGroup1.setOnClickListener(alert);
+        cardPublicGroup1.setTag(0);
+        TextView publicGroup1title = findViewById(R.id.publicGroup1title);
+        TextView publicGroup1members = findViewById(R.id.publicGroup1members);
+        TextView publicGroup1surveys = findViewById(R.id.publicGroup1surveys);
+        ImageView publicGroup1image = findViewById(R.id.publicGroup1image);
+
+        LinearLayout cardPublicGroup2 = findViewById(R.id.cardPublicGroup2);
+        cardPublicGroup2.setOnClickListener(alert);
+        cardPublicGroup2.setTag(1);
+        TextView publicGroup2title = findViewById(R.id.publicGroup2title);
+        TextView publicGroup2members = findViewById(R.id.publicGroup2members);
+        TextView publicGroup2surveys = findViewById(R.id.publicGroup2surveys);
+        ImageView publicGroup2image = findViewById(R.id.publicGroup2image);
+
+        if (publicGroups.size() > 0) {
+            publicGroup1title.setText(publicGroups.get(0).group.getName());
+            publicGroup1members.setText(publicGroups.get(0).numberOfUsers + " members");
+            publicGroup1surveys.setText(publicGroups.get(0).numberOfSurveys + " surveys");
+            publicGroup1image.setImageResource(StaticResources.mapOfIcons.get(publicGroups.get(0).group.getPicture_name()));
+            if (publicGroups.size() > 1) {
+                publicGroup2title.setText(publicGroups.get(1).group.getName());
+                publicGroup2members.setText(publicGroups.get(1).numberOfUsers + " members");
+                publicGroup2surveys.setText(publicGroups.get(1).numberOfSurveys + " surveys");
+                publicGroup2image.setImageResource(StaticResources.mapOfIcons.get(publicGroups.get(0).group.getPicture_name()));
+            }else{
+                cardPublicGroup2.setVisibility(View.GONE);
+            }
+        }else{
+            cardPublicGroup1.setVisibility(View.GONE);
+            cardPublicGroup2.setVisibility(View.GONE);
         }
 
-        if (groups.isEmpty()) {
-            noGroupsTextView.setVisibility(View.VISIBLE);
-            viewAllGroups.setVisibility(View.INVISIBLE);
-            yourGroupsTextView.setVisibility(View.INVISIBLE);
-        } else {
-            noGroupsTextView.setVisibility(View.INVISIBLE);
-            viewAllGroups.setVisibility(View.VISIBLE);
-            yourGroupsTextView.setVisibility(View.VISIBLE);
-        }
-        checkVisibility();
+
     }
 
     private void checkVisibility() {
@@ -347,7 +427,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onResponse(Object response) {
                 Log.e("Response", response.toString());
                 try {
-                    parseUserGroups(response);
+                    parseUserGroups(response, true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -431,5 +511,29 @@ public class DashboardActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    private void getAllPublicGroups() {
+        RequestManager requestManager = RequestManager.getInstance(this);
+
+        String URL = "https://voteaplication.herokuapp.com/exploreGroupsByName/" + userId + "/";
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                Log.e("Response", response.toString());
+                try {
+                    parseUserGroups(response, false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("API error: ", "#onErrorResponse in Dashboard");
+            }
+        });
+        requestManager.addToRequestQueue(request);
     }
 }
