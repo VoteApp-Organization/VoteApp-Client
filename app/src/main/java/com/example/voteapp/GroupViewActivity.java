@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -130,20 +131,30 @@ public class GroupViewActivity extends AppCompatActivity {
         buttonCreate3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GroupViewActivity.this, CreateSurveyActivity.class);
-                intent.putExtra("group", group);
-                intent.putExtra("userId", userId);
-                intent.putExtra("surveyName", surveyNameEditText.getText().toString());
-                intent.putExtra("surveyDesc", surveyDescriptionEditText.getText().toString());
-                intent.putExtra("surveyPicture", selectedIcon);
-                intent.putExtra("isAuthorVoting", isAuthorVoting.isChecked());
-                startActivity(intent);
-                customDialog.dismiss();
+                if(validateForm()) {
+                    Intent intent = new Intent(GroupViewActivity.this, CreateSurveyActivity.class);
+                    intent.putExtra("group", group);
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("surveyName", surveyNameEditText.getText().toString());
+                    intent.putExtra("surveyDesc", surveyDescriptionEditText.getText().toString());
+                    intent.putExtra("surveyPicture", selectedIcon);
+                    intent.putExtra("isAuthorVoting", isAuthorVoting.isChecked());
+                    startActivity(intent);
+                    customDialog.dismiss();
+                }else{
+                    Toast.makeText(GroupViewActivity.this, "Please, fill missing fields",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
         customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         customDialog.show();
     }
+
+    private boolean validateForm() {
+        return (!surveyNameEditText.getText().toString().isEmpty()) && (!surveyDescriptionEditText.getText().toString().isEmpty());
+    }
+
 
     @Override
     protected void onResume() {

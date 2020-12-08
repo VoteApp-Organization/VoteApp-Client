@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -24,20 +23,17 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 public class SurveyAnswersActivity extends AppCompatActivity {
-    private TextView surveyTitle;
     private ListView chartsListView;
     private Button backButton;
     private Group group;
     private Survey survey;
     private String userId;
-    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_answers);
 
-        surveyTitle = findViewById(R.id.surveyTitle);
         chartsListView = findViewById(R.id.chartsListView);
         backButton = findViewById(R.id.backButton);
 
@@ -56,8 +52,6 @@ public class SurveyAnswersActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         survey = (Survey) intent.getSerializableExtra("survey");
         group = (Group) intent.getSerializableExtra("group");
-        title = intent.getStringExtra("surveyTitle");
-        surveyTitle.setText(title);
         getSurveyAnswersRequest();
     }
 
@@ -67,7 +61,7 @@ public class SurveyAnswersActivity extends AppCompatActivity {
         intent.putExtra("userId", userId);
         intent.putExtra("group", group);
         intent.putExtra("survey", survey);
-        intent.putExtra("surveyTitle", title);
+        intent.putExtra("surveyTitle", survey.getVoteTitle());
         startActivity(intent);
     }
 

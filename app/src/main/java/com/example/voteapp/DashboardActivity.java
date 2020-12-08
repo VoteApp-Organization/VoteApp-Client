@@ -23,6 +23,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -127,7 +128,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 final CustomSpinner customAdapter = new CustomSpinner(getApplicationContext());
                 spinnerIcons.setAdapter(customAdapter);
-                spinnerIcons.setSelection(0);
+                spinnerIcons.setSelection(6);
                 spinnerIcons.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -142,13 +143,18 @@ public class DashboardActivity extends AppCompatActivity {
                 buttonCreate2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        try {
-                            Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), selectedIcon, Long.valueOf(userId));
-                            sendPostCreateGroup(grp);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (validateForm()) {
+                            try {
+                                Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), selectedIcon, Long.valueOf(userId));
+                                sendPostCreateGroup(grp);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            customDialog.dismiss();
+                        }else{
+                            Toast.makeText(DashboardActivity.this, "Please, fill missing fields",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                        customDialog.dismiss();
                     }
                 });
                 customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -199,6 +205,10 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
+    private boolean validateForm() {
+        return (!createGroupName.getText().toString().isEmpty()) && (!groupDescriptionEditText.getText().toString().isEmpty());
+    }
+
     public void logout() {
         System.out.println(FirebaseAuth.getInstance());
         FirebaseAuth.getInstance().signOut();
@@ -207,7 +217,7 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void sendPostCreateGroup(Group grp) throws JSONException {
+    private void sendPostCreateGroup(final Group grp) throws JSONException {
         Gson gson = new Gson();
         String jsonString = gson.toJson(grp);
         JSONObject obj = new JSONObject(jsonString);
@@ -221,6 +231,8 @@ public class DashboardActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.e("Response", response.toString());
+                        Toast.makeText(DashboardActivity.this, "Group " + grp.getName() + " created successfully",
+                                Toast.LENGTH_SHORT).show();
                         getUserInfoApiRequest(userId);
                         getAllPublicGroups();
                     }
@@ -335,11 +347,11 @@ public class DashboardActivity extends AppCompatActivity {
                 publicGroup2title.setText(publicGroups.get(1).group.getName());
                 publicGroup2members.setText(publicGroups.get(1).numberOfUsers + " members");
                 publicGroup2surveys.setText(publicGroups.get(1).numberOfSurveys + " surveys");
-                publicGroup2image.setImageResource(StaticResources.mapOfIcons.get(publicGroups.get(0).group.getPicture_name()));
-            }else{
+                publicGroup2image.setImageResource(StaticResources.mapOfIcons.get(publicGroups.get(1).group.getPicture_name()));
+            } else {
                 cardPublicGroup2.setVisibility(View.GONE);
             }
-        }else{
+        } else {
             cardPublicGroup1.setVisibility(View.GONE);
             cardPublicGroup2.setVisibility(View.GONE);
         }

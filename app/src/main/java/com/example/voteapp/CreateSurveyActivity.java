@@ -20,8 +20,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -95,16 +95,21 @@ public class CreateSurveyActivity extends AppCompatActivity {
         previewSurveyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateSurveyActivity.this, PreviewSurveyContainerActivity.class);
-                intent.putExtra("userId", userId);
-                intent.putExtra("group", group);
-                Bundle args = new Bundle();
-                Date cDate = new Date();
-                String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-                args.putSerializable("survey", (Serializable) new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture, isAuthorVoting));
-                args.putSerializable("questionsList", (Serializable) allQuestions);
-                intent.putExtra("BUNDLE", args);
-                startActivity(intent);
+                if (allQuestions.size() > 0) {
+                    Intent intent = new Intent(CreateSurveyActivity.this, PreviewSurveyContainerActivity.class);
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("group", group);
+                    Bundle args = new Bundle();
+                    Date cDate = new Date();
+                    String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+                    args.putSerializable("survey", (Serializable) new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture, isAuthorVoting));
+                    args.putSerializable("questionsList", (Serializable) allQuestions);
+                    intent.putExtra("BUNDLE", args);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(CreateSurveyActivity.this, "Please, add question before preview",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -128,10 +133,15 @@ public class CreateSurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-                try {
-                    sendSurvey(new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture, isAuthorVoting));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (allQuestions.size() > 0) {
+                    try {
+                        sendSurvey(new Survey(surveyName, surveyDesc, Long.valueOf(userId), fDate, true, false, false, allQuestions.size(), surveyPicture, isAuthorVoting));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(CreateSurveyActivity.this, "Please, add question before sharing",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -241,9 +251,14 @@ public class CreateSurveyActivity extends AppCompatActivity {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            allQuestions.get(tag).getPicklistValues().add(singleAnswerContentEdit.getText().toString());
-                            refreshSubList(subLayoutsList.get(tag), tag);
-                            return true;
+                            if (!singleAnswerContentEdit.getText().toString().isEmpty()) {
+                                allQuestions.get(tag).getPicklistValues().add(singleAnswerContentEdit.getText().toString());
+                                refreshSubList(subLayoutsList.get(tag), tag);
+                                return true;
+                            } else {
+                                Toast.makeText(CreateSurveyActivity.this, "Please, fill missing field",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                         return false;
                     }
@@ -297,13 +312,18 @@ public class CreateSurveyActivity extends AppCompatActivity {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            scroll.fullScroll(View.FOCUS_DOWN);
-                            Log.e("asd", spinner.getSelectedItem().toString());
-                            allQuestions.add(new SingleQuestion(addQuestionEditText.getText().toString(), false, false, 50, spinner.getSelectedItem().toString(), new ArrayList<String>()));
-                            refreshList();
-                            subLayoutsList.get(subLayoutsList.size() - 1).setVisibility(View.VISIBLE);
-                            typeOfQuestionTextViews.get(typeOfQuestionTextViews.size() - 1).setVisibility(View.VISIBLE);
-                            return true;
+                            if (!addQuestionEditText.getText().toString().isEmpty()) {
+                                scroll.fullScroll(View.FOCUS_DOWN);
+                                Log.e("asd", spinner.getSelectedItem().toString());
+                                allQuestions.add(new SingleQuestion(addQuestionEditText.getText().toString(), false, false, 50, spinner.getSelectedItem().toString(), new ArrayList<String>()));
+                                refreshList();
+                                subLayoutsList.get(subLayoutsList.size() - 1).setVisibility(View.VISIBLE);
+                                typeOfQuestionTextViews.get(typeOfQuestionTextViews.size() - 1).setVisibility(View.VISIBLE);
+                                return true;
+                            } else {
+                                Toast.makeText(CreateSurveyActivity.this, "Please, fill missing field",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                         return false;
                     }

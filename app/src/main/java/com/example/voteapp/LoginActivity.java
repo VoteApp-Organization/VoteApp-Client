@@ -61,9 +61,18 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                if(validateForm()){
+                    login();
+                }else{
+                    Toast.makeText(LoginActivity.this, "Please, fill missing credentials",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private boolean validateForm() {
+        return email.getText().toString().contains("@") && (!password.getText().toString().isEmpty());
     }
 
     @Override
@@ -85,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                             getInfo();
                         } else {
                             Log.e("LoginActivity", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Authentication failed",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -127,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.w("LoginActivity", "signInWithEmail:failure", error.getCause());
-                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                        Toast.makeText(LoginActivity.this, "Authentication failed",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -140,38 +149,4 @@ public class LoginActivity extends AppCompatActivity {
         };
         requestManager.addToRequestQueue(jsObjRequest);
     }
-    /*
-    private void sendPostRequestToCheckUserExist() throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("email", email.getText().toString());
-        obj.put("password", password.getText().toString());
-
-        String URL = "https://voteaplication.herokuapp.com/loginUser";
-        Log.w("LoginActivity", obj.toString());
-
-        RequestManager requestManager = RequestManager.getInstance(this);
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, URL, obj,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Intent intent = new Intent(LoginActivity.this, Dashboard.class);
-                        try {
-                            intent.putExtra("userId", response.getString("id"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        startActivity(intent);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.w("LoginActivity", "signInWithEmail:failure", error.getCause());
-                        Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-        requestManager.addToRequestQueue(jsObjRequest);
-    }
-*/
 }

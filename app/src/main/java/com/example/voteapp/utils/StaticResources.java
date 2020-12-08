@@ -12,11 +12,11 @@ public class StaticResources {
     {{
         put("budget", R.drawable.budget);
         put("tools", R.drawable.tools);
+        put("flag", R.drawable.flag);
         put("politicians", R.drawable.politicians);
         put("city", R.drawable.city);
-        put("school", R.drawable.school);
-        put("flag", R.drawable.flag);
         put("party", R.drawable.party);
+        put("school", R.drawable.school);
         put("dorm", R.drawable.dorm);
     }};
 

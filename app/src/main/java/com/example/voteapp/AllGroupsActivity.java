@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -59,7 +58,6 @@ public class AllGroupsActivity extends AppCompatActivity {
 
     private List<Group> groups = new ArrayList<>();
     private String userId;
-    private ListView list;
     private TextView groupTitle;
     private Button joinGroupButton;
     private Button createGroupyButton;
@@ -88,7 +86,6 @@ public class AllGroupsActivity extends AppCompatActivity {
         exploreLayout = findViewById(R.id.exploreLayout);
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.custom_group_item, null);
-        list = findViewById(R.id.listView);
         groupTitle = findViewById(R.id.groupTitle);
         joinGroupButton = findViewById(R.id.buttonJoinGroup);
         createGroupyButton = findViewById(R.id.createGroupyButton);
@@ -126,13 +123,18 @@ public class AllGroupsActivity extends AppCompatActivity {
                 buttonCreate2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        try {
-                            Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), selectedIcon, Long.valueOf(userId));
-                            sendPostCreateGroup(grp);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (validateForm()) {
+                            try {
+                                Group grp = new Group(createGroupName.getText().toString(), groupDescriptionEditText.getText().toString(), isPublic.isChecked(), selectedIcon, Long.valueOf(userId));
+                                sendPostCreateGroup(grp);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            customDialog.dismiss();
+                        } else {
+                            Toast.makeText(AllGroupsActivity.this, "Please, fill missing fields",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                        customDialog.dismiss();
                     }
                 });
                 customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -170,13 +172,18 @@ public class AllGroupsActivity extends AppCompatActivity {
                 buttonCreate2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        try {
-                            sendPostJoinGroup(context, userId, "", passwordEditText.getText().toString());
-                            getUserInfoApiRequest(userId);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if(!passwordEditText.getText().toString().isEmpty()) {
+                            try {
+                                sendPostJoinGroup(context, userId, "", passwordEditText.getText().toString());
+                                getUserInfoApiRequest(userId);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            customDialog.dismiss();
+                        }else{
+                            Toast.makeText(AllGroupsActivity.this, "Please, fill missing password",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                        customDialog.dismiss();
                     }
                 });
                 customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -190,6 +197,10 @@ public class AllGroupsActivity extends AppCompatActivity {
         Intent intent = new Intent(AllGroupsActivity.this, DashboardActivity.class);
         intent.putExtra("userId", userId);
         startActivity(intent);
+    }
+
+    private boolean validateForm() {
+        return (!createGroupName.getText().toString().isEmpty()) && (!groupDescriptionEditText.getText().toString().isEmpty());
     }
 
     private void sendPostCreateGroup(Group grp) throws JSONException {
