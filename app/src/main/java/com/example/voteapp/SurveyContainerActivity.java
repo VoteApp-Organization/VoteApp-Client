@@ -140,19 +140,19 @@ public class SurveyContainerActivity extends AppCompatActivity {
         } else {
             surveyDateOfVote.setText("Not voted yet");
         }
+        showAnswersButton.setVisibility(View.INVISIBLE);
 
-        if (survey.answerHasBeenGiven != null && survey.answerHasBeenGiven) {
+        if (userId.equals(String.valueOf(survey.getAuthor_id())) && survey.authorIsVoting != null && !survey.authorIsVoting) {
+            startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
+            startSurvey.setText("Author can't vote");
+        } else if (survey.answerHasBeenGiven != null && survey.answerHasBeenGiven) {
             startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
             startSurvey.setText("Already voted");
         }
-        if (group.getOwner_id().equals(Long.valueOf(userId)) && survey.authorIsVoting == null) {
-            startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
-            startSurvey.setText("Author can't vote");
-            showAnswersButton.setVisibility(View.VISIBLE);
-        } else {
-            showAnswersButton.setVisibility(View.INVISIBLE);
-        }
 
+        if (userId.equals(String.valueOf(survey.getAuthor_id()))) {
+            showAnswersButton.setVisibility(View.VISIBLE);
+        }
         getUserInfoApiRequest();
     }
 
