@@ -35,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView alreadyRegisteredButton;
     private EditText email;
     private EditText password;
+    private EditText confirmPassword;
     private Button registerBtn;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -56,13 +57,30 @@ public class RegisterActivity extends AppCompatActivity {
         });
         email = findViewById(R.id.editTextEmailAddress);
         password = findViewById(R.id.editTextPassword);
+        confirmPassword = findViewById(R.id.editTextConfirmPassword);
         registerBtn = findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                register();
+                if(validateForm()){
+                    register();
+                }
             }
         });
+    }
+
+    private boolean validateForm() {
+        if(!email.getText().toString().contains("@") || (password.getText().toString().isEmpty()) || (confirmPassword.getText().toString().isEmpty())){
+            Toast.makeText(RegisterActivity.this, "Please, fill missing credentials",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(!password.getText().toString().trim().equals(confirmPassword.getText().toString().trim())){
+            Toast.makeText(RegisterActivity.this, "Passwords do not match",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void register() {

@@ -105,8 +105,13 @@ public class SingleQuestionActivity extends AppCompatActivity {
         } else {
             listOfAnswers.add(answerContent.getText().toString());
         }
-        VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), Long.valueOf(userId), listOfAnswers);
-        voteAnswers.add(voteAnswer);
+        if(!listOfAnswers.isEmpty()){
+            VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), Long.valueOf(userId), listOfAnswers);
+            voteAnswers.add(voteAnswer);
+        }else{
+            Toast.makeText(SingleQuestionActivity.this, "You must complete the answer",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupQuestion() {

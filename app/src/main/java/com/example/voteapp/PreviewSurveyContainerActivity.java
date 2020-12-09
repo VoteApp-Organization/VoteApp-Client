@@ -27,6 +27,7 @@ public class PreviewSurveyContainerActivity extends AppCompatActivity {
     private TextView previewMode;
     private Button startSurvey;
     private Button backButton;
+    private Button displyAnswersButton;
     private Group group;
     private String userId;
     private Survey survey;
@@ -46,7 +47,9 @@ public class PreviewSurveyContainerActivity extends AppCompatActivity {
         previewMode = findViewById(R.id.previewMode);
         startSurvey = findViewById(R.id.startSurveyBtn);
         backButton = findViewById(R.id.backButton);
+        displyAnswersButton = findViewById(R.id.displyAnswers);
         previewMode.setVisibility(View.VISIBLE);
+        displyAnswersButton.setVisibility(View.INVISIBLE);
 
         startSurvey.setOnClickListener(new View.OnClickListener() {
             @Override

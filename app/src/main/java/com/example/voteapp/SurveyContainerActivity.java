@@ -3,13 +3,11 @@ package com.example.voteapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,25 +16,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.anychart.AnyChart;
-import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
-import com.anychart.charts.Pie;
 import com.example.voteapp.model.Group;
 import com.example.voteapp.model.SingleQuestion;
 import com.example.voteapp.model.Survey;
-import com.example.voteapp.model.SurveyResultWrapper;
 import com.example.voteapp.model.VoteAnswer;
-import com.example.voteapp.utils.CustomAdapter;
-import com.example.voteapp.utils.CustomResultsAdapter;
 import com.example.voteapp.utils.RequestManager;
+import com.example.voteapp.utils.StaticResources;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,6 +39,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
     private TextView surveyEndsTime;
     private TextView surveyNumberOfQuestions;
     private TextView surveyDateOfVote;
+    private ImageView surveyIcon;
     private Button startSurvey;
     private Button backButton;
     private Button showAnswersButton;
@@ -57,7 +47,6 @@ public class SurveyContainerActivity extends AppCompatActivity {
     private Survey survey;
     private String userId;
     private String title;
-    private ListView chartsListView;
     final List<SingleQuestion> allQuestions = new ArrayList<>();
     final List<VoteAnswer> voteAnswers = new ArrayList<>();
 
@@ -74,6 +63,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
         surveyDateOfVote = findViewById(R.id.surveyDateOfVote);
         startSurvey = findViewById(R.id.startSurveyBtn);
         backButton = findViewById(R.id.backButton);
+        surveyIcon = findViewById(R.id.surveyIcon);
         showAnswersButton = findViewById(R.id.showAnswersButton);
 
 
@@ -132,8 +122,9 @@ public class SurveyContainerActivity extends AppCompatActivity {
         surveyTitle.setText(title);
         surveyDescription.setText(survey.getSurveyDescription());
         surveyStartTime.setText(survey.getStartDate());
-        surveyEndsTime.setText(survey.getEndDate());
+        surveyEndsTime.setText("2020-12-24");
         surveyNumberOfQuestions.setText(String.valueOf(survey.getNumberOfQuestions()));
+        surveyIcon.setImageResource(StaticResources.mapOfIcons.get(survey.getSurveyPicture()));
         String dateOfVote = survey.voteDate;
         if (dateOfVote != null) {
             surveyDateOfVote.setText(survey.voteDate);
@@ -145,6 +136,7 @@ public class SurveyContainerActivity extends AppCompatActivity {
         if (userId.equals(String.valueOf(survey.getAuthor_id())) && survey.authorIsVoting != null && !survey.authorIsVoting) {
             startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
             startSurvey.setText("Author can't vote");
+            surveyDateOfVote.setText("Author can't vote");
         } else if (survey.answerHasBeenGiven != null && survey.answerHasBeenGiven) {
             startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
             startSurvey.setText("Already voted");
