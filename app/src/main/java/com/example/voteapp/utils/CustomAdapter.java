@@ -72,6 +72,9 @@ public class CustomAdapter extends BaseAdapter {
             titleTextView.setText(str.getVoteTitle());
             numberOfQuestions.setText("(" + str.getNumberOfQuestions() + " questions)");
             surveyIcon.setImageResource(StaticResources.mapOfIcons.get(str.getSurveyPicture()));
+            if(str.authorIsVoting == null && str.answerHasBeenGiven == null){
+                layout.getBackground().setColorFilter(greyFilter);
+            }
             if (userId.equals(String.valueOf(str.getAuthor_id())) && str.authorIsVoting != null && !str.authorIsVoting) {
                 layout.getBackground().setColorFilter(greyFilter);
             } else if (str.answerHasBeenGiven != null && str.answerHasBeenGiven) {

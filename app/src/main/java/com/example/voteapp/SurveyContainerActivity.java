@@ -132,7 +132,11 @@ public class SurveyContainerActivity extends AppCompatActivity {
             surveyDateOfVote.setText("Not voted yet");
         }
         showAnswersButton.setVisibility(View.INVISIBLE);
-
+        if(survey.authorIsVoting == null && survey.answerHasBeenGiven == null){
+            startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
+            startSurvey.setText("Author can't vote");
+            surveyDateOfVote.setText("Author can't vote");
+        }
         if (userId.equals(String.valueOf(survey.getAuthor_id())) && survey.authorIsVoting != null && !survey.authorIsVoting) {
             startSurvey.setBackgroundResource(R.drawable.custom_button_disabled);
             startSurvey.setText("Author can't vote");

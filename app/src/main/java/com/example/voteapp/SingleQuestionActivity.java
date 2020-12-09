@@ -75,35 +75,38 @@ public class SingleQuestionActivity extends AppCompatActivity {
         nextQuestionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveAnswer();
-                if (nextQuestionBtn.getText().toString().trim().equals("Next question")) {
-                    Intent intent = new Intent(SingleQuestionActivity.this, SingleQuestionActivity.class);
-                    Bundle args = new Bundle();
-                    args.putSerializable("questionsList", (Serializable) allQuestions);
-                    args.putSerializable("voteAnswers", (Serializable) voteAnswers);
-                    intent.putExtra("BUNDLE", args);
-                    intent.putExtra("userId", userId);
-                    intent.putExtra("group", group);
-                    intent.putExtra("questionNumber", number + 1);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                } else {
-                    try {
-                        sendPostRequestToSaveAnswers();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                if(saveAnswer()) {
+                    if (nextQuestionBtn.getText().toString().trim().equals("Next question")) {
+                        Intent intent = new Intent(SingleQuestionActivity.this, SingleQuestionActivity.class);
+                        Bundle args = new Bundle();
+                        args.putSerializable("questionsList", (Serializable) allQuestions);
+                        args.putSerializable("voteAnswers", (Serializable) voteAnswers);
+                        intent.putExtra("BUNDLE", args);
+                        intent.putExtra("userId", userId);
+                        intent.putExtra("group", group);
+                        intent.putExtra("questionNumber", number + 1);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    } else {
+                        try {
+                            sendPostRequestToSaveAnswers();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
         });
     }
 
-    private void saveAnswer() {
+    private boolean saveAnswer() {
         List<String> listOfAnswers = new ArrayList<>();
         if (typeOfQuestion.equals("Picklist")) {
             listOfAnswers = adapter.getClickedItems();
         } else {
-            listOfAnswers.add(answerContent.getText().toString());
+            if(answerContent.getText().toString().length()>0){
+                listOfAnswers.add(answerContent.getText().toString());
+            }
         }
         if(!listOfAnswers.isEmpty()){
             VoteAnswer voteAnswer = new VoteAnswer(allQuestions.get(number).getId(), allQuestions.get(number).getVote_id(), Long.valueOf(userId), listOfAnswers);
@@ -111,7 +114,9 @@ public class SingleQuestionActivity extends AppCompatActivity {
         }else{
             Toast.makeText(SingleQuestionActivity.this, "You must complete the answer",
                     Toast.LENGTH_SHORT).show();
+            return false;
         }
+        return true;
     }
 
     private void setupQuestion() {
